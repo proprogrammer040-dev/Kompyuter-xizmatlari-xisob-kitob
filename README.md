@@ -116,7 +116,14 @@ Bot mijozga xizmat ko'rsatishdan oldin Telegram kanalingizga obuna bo'lishni so'
 Maydonni bo'shatib saqlasangiz, obuna talab qilinmaydi. Bot kanalda admin bo'lmasa, tekshiruv o'tkazib
 yuboriladi (mijozlar to'xtab qolmaydi), ilova esa sababini ko'rsatadi.
 
-Mijoz uchun tartib: Start → kanalga obuna → «✅ Obuna bo'ldim» → fayl → nusxa → rang → izoh → telefon → Tasdiqlash.
+Mijoz uchun tartib: Start → kanalga obuna → «🛠 Buyurtma berish» → xizmatni tanlash →
+fayl (foto, kserokopiya, taklifnoma, vizitka, albom) yoki tavsif (ta'mirlash, laminatsiya, DVD, internet) →
+ism-familiya → manzil (matn yoki lokatsiya) → telefon → Tasdiqlash. Ma'lumotlar keyingi safar so'ralmaydi.
+
+### Ishxona lokatsiyasi va aloqa
+Sozlamalar → Do'kon: **telefon, manzil, ish vaqti** va **lokatsiya** (Google Maps havolasi yoki `40.6512, 68.7321`).
+Eng osoni: Telegram'ingizni botga ulagach, ishxonada turib botga 📎 → **Lokatsiya** yuboring → «Ha, saqlash».
+Buyurtma tayyor bo'lganda va «📍 Manzil va aloqa» bosilganda mijozga shu xarita yuboriladi.
 Bot menyusida doim «❓ Qanday buyurtma beriladi» tugmasi va `/help` buyrug'i bor.
 
 Eslatma: Railway'da servis **1 ta nusxa (replica)** bo'lib ishlashi kerak (standart holat shunday) —

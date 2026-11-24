@@ -39,6 +39,8 @@ async function migrate() {
     create index if not exists records_shop_date on records(shop_id, col, date);
     create table if not exists tg_users(
       chat_id bigint primary key, phone text, name text, updated_at timestamptz default now());
+    alter table tg_users add column if not exists addr text;
+    alter table tg_users add column if not exists loc jsonb;
     create table if not exists applied_ops(
       shop_id int not null, op_id text not null, at timestamptz default now(),
       primary key(shop_id, op_id));
@@ -219,6 +221,11 @@ app.post("/api/bot/link", auth, (req, res) => {
 app.post("/api/bot/channel-check", auth, async (req, res) => {
   res.json(await bot.channelCheck(req.user.uid, String(req.body.channel || ""), String(req.body.link || "")));
 });
+// Ishxona lokatsiyasi: Google Maps havolasi yoki koordinata → {lat,lng}
+app.post("/api/bot/loc", auth, async (req, res) => {
+  const p = await bot.resolveLoc(String(req.body.v || "").slice(0, 2000));
+  res.json(p ? { ok: true, ...p } : { ok: false, error: "Havoladan joyni aniqlab bo‘lmadi. Google Maps'da joyni bosib turing, chiqqan koordinatani (masalan 40.123, 68.456) nusxalab qo‘ying." });
+});
 app.post("/api/bot/unlink", auth, async (req, res) => { await bot.unlink(req.user.uid); res.json({ ok: true }); });
 
 // Buyurtma holatini o'zgartirish + mijozga Telegram xabari
@@ -238,8 +245,9 @@ app.post("/api/orders/:id/status", auth, async (req, res) => {
   const s = (await getRecord(shop, "meta", "settings")) || {};
   const e = bot.esc;
   let text = null;
-  if (st === "ishlanmoqda") text = `🖨 Buyurtmangiz №${o.no} ishlanmoqda.`;
-  else if (st === "tayyor") text = `✅ <b>Buyurtmangiz №${o.no} tayyor!</b>${o.total ? "\n💰 Summa: <b>" + bot.money(o.total) + "</b>" : ""}\n\n${s.shopAddr ? "📍 " + e(s.shopAddr) + "\n" : ""}Olib ketishingiz mumkin. Rahmat!`;
+  const sv = o.service && o.service.t ? ` (${e(o.service.t)})` : "", tamir = o.service && o.service.g === "tamir";
+  if (st === "ishlanmoqda") text = `${tamir ? "🔧" : "⚙️"} Buyurtmangiz №${o.no}${sv} ishlanmoqda.`;
+  else if (st === "tayyor") text = `✅ <b>${tamir ? "Qurilmangiz" : "Buyurtmangiz"} №${o.no} tayyor!</b>${sv}${o.total ? "\n💰 Summa: <b>" + bot.money(o.total) + "</b>" : ""}\n\n🏪 Ishxonamizga kelib olib ketishingiz mumkin.${s.shopAddr ? "\n📍 " + e(s.shopAddr) : ""}${s.shopHours ? "\n🕘 " + e(s.shopHours) : ""}${s.shopPhone ? "\n📞 " + e(s.shopPhone) : ""}\nRahmat!`;
   else if (st === "berildi") text = `🙏 Rahmat! Buyurtma №${o.no} topshirildi. Yana kutib qolamiz.`;
   else if (st === "bekor") text = `❌ Buyurtma №${o.no} bekor qilindi.${o.reason ? "\nSabab: " + e(o.reason) : ""}`;
   const notified = req.body.silent || !text ? false : await bot.notifyCustomer(o, text);
@@ -249,12 +257,13 @@ app.post("/api/orders/:id/status", auth, async (req, res) => {
 // Mijoz yuborgan faylni ochish (Telegram'dan olib beriladi)
 app.get("/api/orders/:id/file", auth, async (req, res) => {
   const o = await getRecord(req.user.uid, "orders", req.params.id);
-  if (!o || !o.file) return res.status(404).send("Fayl topilmadi");
+  const f = (o && Array.isArray(o.files) && o.files[Number(req.query.i) || 0]) || (o && o.file);
+  if (!f) return res.status(404).send("Fayl topilmadi");
   try {
-    const r = await bot.fileResponse(o.file.fileId);
+    const r = await bot.fileResponse(f.fileId);
     const buf = Buffer.from(await r.arrayBuffer());
-    res.set("Content-Type", o.file.mime || r.headers.get("content-type") || "application/octet-stream");
-    res.set("Content-Disposition", `inline; filename*=UTF-8''${encodeURIComponent(o.file.name || "fayl")}`);
+    res.set("Content-Type", f.mime || r.headers.get("content-type") || "application/octet-stream");
+    res.set("Content-Disposition", `inline; filename*=UTF-8''${encodeURIComponent(f.name || "fayl")}`);
     res.set("Cache-Control", "private, max-age=3600");
     res.send(buf);
   } catch (err) {
