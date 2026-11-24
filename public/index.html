@@ -20,7 +20,7 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{font:14.5px/1.5 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01"}
+body{font:14.5px/1.5 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:#04060d;-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01"}
 .n,.stat strong,.kpi strong,td.n{font-variant-numeric:tabular-nums}
 button,input,select{font:inherit}
 .hidden{display:none!important}
@@ -52,10 +52,13 @@ button,input,select{font:inherit}
 .hbtn{background:#ffffff14;color:#fff;border:0;border-radius:10px;padding:9px 12px;font-weight:600;cursor:pointer;font-size:13px}
 
 /* ---------- Asosiy qism ---------- */
-.content{margin-left:var(--side);min-height:100vh}
-.top{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:14px;padding:16px 32px;background:rgba(244,246,250,.85);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
-.top h1{margin:0;font-size:20px;font-weight:700;letter-spacing:-.01em}
-.top .sub{margin:1px 0 0;color:var(--muted);font-size:13px}
+#bgFx{position:fixed;inset:0;z-index:0;pointer-events:none;
+ background:radial-gradient(80% 60% at 70% 10%,#1e2a6b55 0%,transparent 60%),radial-gradient(70% 60% at 10% 90%,#5b21b633 0%,transparent 60%),#04060d}
+.micro-slats{position:relative;width:100%;height:100%;overflow:hidden}
+.content{margin-left:var(--side);min-height:100vh;position:relative;z-index:1}
+.top{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:14px;padding:16px 32px;background:rgba(4,7,16,.55);backdrop-filter:saturate(1.3) blur(14px);-webkit-backdrop-filter:saturate(1.3) blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
+.top h1{margin:0;font-size:20px;font-weight:700;letter-spacing:-.01em;color:#fff}
+.top .sub{margin:1px 0 0;color:#a9b8d8;font-size:13px}
 .top .mbrand{display:none}
 .top .tavatar{width:38px;height:38px;box-shadow:0 0 0 2px #fff,0 0 0 3px var(--line)}
 .sync{margin-left:auto;display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:600;background:#fff;border:1px solid var(--line);color:var(--ink2);white-space:nowrap}
@@ -74,7 +77,7 @@ main{max-width:1180px;margin:0 auto;padding:24px 32px 48px}
 .banner{background:var(--card);border:1px solid var(--line);border-left:3px solid #7c3aed;border-radius:var(--r);padding:12px 16px;margin-top:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;box-shadow:var(--shadow);font-size:13.5px}
 .banner b{color:#4c1d95}
 
-.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin:16px 0;box-shadow:var(--shadow)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 h2{font-size:17px;font-weight:700;margin:0 0 14px;letter-spacing:-.01em}
 h3{font-size:14px;font-weight:650;margin:22px 0 8px;color:var(--ink2)}
 .row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
@@ -156,6 +159,63 @@ body:not([data-tab="sale"]):not([data-tab="reports"]) :is(.stats,#goalBox,#banne
 .svc-add:hover{background:#eff4ff;border-color:#93b4f5;color:var(--brand)}
 .svc-add b{font-size:30px;line-height:1;font-weight:400}
 .svc-empty{grid-column:1/-1}
+.rc-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
+.rc-shade{position:absolute;inset:0;z-index:0;display:none;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.18) 26%,rgba(0,0,0,.35) 45%,rgba(0,0,0,.78) 68%,rgba(0,0,0,.94) 100%)}
+.reflective-card.has-img .reflective-card__content{text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 12px rgba(0,0,0,.5)}
+.reflective-card.has-img .reflective-card__role{color:rgba(255,255,255,.85)}
+.reflective-card.has-img .rc-shade{display:block}
+.reflective-card.has-color .reflective-card__body::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background:radial-gradient(130% 75% at 0% 0%,color-mix(in srgb,var(--acc) 42%,transparent) 0%,transparent 62%),linear-gradient(0deg,color-mix(in srgb,var(--acc) 22%,transparent),transparent 45%)}
+.reflective-card.has-color.has-img .reflective-card__body::after{opacity:.55}
+.reflective-card.has-color .reflective-card__badge svg{color:var(--acc);stroke:var(--acc)}
+.reflective-card.has-color .reflective-card__tile{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 85%,#fff) 0%,var(--acc) 100%);color:#fff}
+.reflective-card.has-color .reflective-card__rim{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 45%,transparent),inset 0 1px 0 var(--rc-rim-highlight)}
+.lookcell{display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
+.rc-emblem{margin-left:auto;width:46px;height:46px;flex:none;border-radius:14px;display:grid;place-items:center;color:#fff;
+ background:linear-gradient(145deg,color-mix(in srgb,var(--acc,#9ca3af) 88%,#fff) 0%,var(--acc,#6b7280) 55%,color-mix(in srgb,var(--acc,#4b5563) 72%,#000) 100%);
+ box-shadow:0 10px 22px -8px color-mix(in srgb,var(--acc,#000) 80%,transparent),inset 0 1px 0 rgba(255,255,255,.4),inset 0 -1px 0 rgba(0,0,0,.18)}
+.rc-emblem svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.reflective-card__header{align-items:flex-start}
+.reflective-card__identity .reflective-card__status{margin:5px 0 0;font-size:11.5px}
+.emb-sm{width:30px;height:30px;border-radius:9px;flex:none;display:grid;place-items:center;background:linear-gradient(145deg,color-mix(in srgb,var(--acc,#9ca3af) 85%,#fff),var(--acc,#6b7280))}
+.emb-sm svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#serviceTable{overflow-x:auto;padding-bottom:4px}#serviceTable table{min-width:1260px}#serviceTable td{padding:8px 8px}
+.swatch{width:18px;height:18px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.thumb{width:32px;height:32px;border-radius:8px;object-fit:cover;flex:none;box-shadow:0 0 0 1px var(--line)}
+.exsum{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 4px;font-size:14px}.exsum>span{margin-right:6px}
+.chip{height:auto;border:1px solid var(--line);background:#f8fafc;border-radius:999px;padding:4px 11px;font-size:12.5px;font-weight:500;color:var(--ink2)}
+.chip.on{background:var(--brandbg);border-color:#bfd0fb;color:#1d4ed8}
+#pinModal{z-index:48}
+.tab{position:relative}
+.nbadge{margin-left:auto;background:#ef4444;color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:0 7px;line-height:18px;min-width:18px;text-align:center;box-shadow:0 0 0 2px #0a1428}
+.olist{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;margin-top:12px}
+.ocard{border:1px solid var(--line);border-left:4px solid #3b82f6;border-radius:14px;padding:14px 16px;background:#fff;display:flex;flex-direction:column;gap:7px;box-shadow:var(--shadow)}
+.ocard.s-ishlanmoqda{border-left-color:#f59e0b}.ocard.s-tayyor{border-left-color:#10b981}.ocard.s-berildi{border-left-color:#8b5cf6;opacity:.85}.ocard.s-bekor{border-left-color:#ef4444;opacity:.7}
+.oc-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.oc-no{font-size:17px}.oc-sum{margin-left:auto;font-size:16px}
+.oc-file{display:flex;align-items:center;gap:8px;background:#f8fafc;border:1px solid var(--line2);border-radius:10px;padding:8px 10px;min-width:0}
+.oc-ic{font-size:18px}.oc-fn{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1}
+.oc-open{margin-left:auto;white-space:nowrap;font-weight:600;color:var(--brand);text-decoration:none;background:var(--brandbg);border-radius:8px;padding:5px 10px;font-size:13px}
+.oc-meta{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:13.5px;color:var(--ink2)}.oc-note{flex-basis:100%}
+.oc-cust{font-size:13.5px;color:var(--ink2)}.oc-cust a{color:var(--brand);text-decoration:none}
+.oc-act{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;font-size:12.5px}
+.weekcard{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:14px}
+.wk-chg{display:inline-block;margin-top:4px;font-size:12.5px;font-weight:700;border-radius:999px;padding:1px 8px;background:#f1f5f9;color:var(--muted)}
+.wk-chg.up{background:var(--greenbg);color:#047857}.wk-chg.down{background:var(--redbg);color:#b91c1c}
+.chan-st{margin-top:8px;border-radius:10px;padding:10px 12px;font-size:13.5px}.chan-st.ok{background:var(--greenbg);color:#065f46}.chan-st.bad{background:var(--amberbg);color:#92400e}
+.wk-prev{font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.45}
+.pin-sheet{width:min(380px,100%)}
+.pin-dots{display:flex;justify-content:center;gap:16px;margin:8px 0 6px}
+.pin-dots i{width:18px;height:18px;border-radius:50%;border:2px solid #cbd5e1;transition:background .12s,border-color .12s,transform .12s}
+.pin-dots i.on{background:var(--brand);border-color:var(--brand);transform:scale(1.08)}
+.pin-dots.shake{animation:pinShake .38s}
+.pin-dots.err i{border-color:#ef4444}.pin-dots.err i.on{background:#ef4444}
+@keyframes pinShake{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+.pin-msg{min-height:20px;text-align:center;font-size:13px;color:#b91c1c;margin-bottom:6px}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pin-pad button{height:58px;font-size:22px;font-weight:600;border-radius:14px;background:#f1f5f9}
+.pin-pad button:hover{background:#e2e8f0}.pin-pad .pk-aux{font-size:15px;color:var(--muted)}
+.pin-pad button:disabled{opacity:.4}
+.pin-forgot{display:block;text-align:center;margin-top:14px;font-size:13px;color:var(--brand);text-decoration:none}
 .reflective-card.pulse .reflective-card__body{animation:rcPulse .7s ease}
 @keyframes rcPulse{30%{box-shadow:var(--rc-shadow),0 0 0 4px #22c55e}}
 .pill.v{background:var(--violetbg);color:var(--violet)}
@@ -266,9 +326,12 @@ details.arch{margin-top:24px;border-top:1px solid var(--line);padding-top:8px}de
  .stat{padding:13px 14px}.stat strong{font-size:18px}
  .grid2{grid-template-columns:1fr}
  .svc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.svc-grid .reflective-card,.svc-add{--rc-height:184px;height:184px}
- .svc-grid .reflective-card{--rc-pad:13px}.reflective-card__name{font-size:15.5px}
+ .svc-grid .reflective-card{--rc-pad:13px}.rc-emblem{width:40px;height:40px;border-radius:12px}.rc-emblem svg{width:22px;height:22px}.reflective-card__name{font-size:15.5px}
  .search{max-width:none;flex:1 1 100%}.seg:not(.full){width:100%}.seg:not(.full) button{flex:1;padding:0 8px}
  .modal{place-items:end center;padding:0}.sheet{width:100%;border-radius:22px 22px 0 0;padding:20px 18px calc(18px + env(safe-area-inset-bottom));transform:translateY(40px)}
+ .olist{grid-template-columns:1fr}
+ .tab .nbadge{position:absolute;top:1px;left:calc(50% + 4px);margin:0;font-size:10px;line-height:15px;padding:0 5px;min-width:15px}
+ #weekBox .kpis{grid-template-columns:1fr!important}
  .mgrid{grid-template-columns:repeat(3,1fr);gap:8px}.mcard{padding:9px 10px}.mc-profit{font-size:15px}.mc-row{font-size:11.5px}
  .mc-row span{white-space:nowrap}.mc-row .lb{font-size:0}.mc-row .lb:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#3b82f6;vertical-align:1px}.mc-row .lb.c:before{background:#f59e0b}
  #yearChart svg{min-width:0}.kpi strong{font-size:16px}.chartcard{padding:12px 10px 6px}
@@ -305,6 +368,7 @@ details.arch{margin-top:24px;border-top:1px solid var(--line);padding-top:8px}de
 </style>
 </head>
 <body data-tab="sale">
+<div id="bgFx" aria-hidden="true"></div>
 <!-- Kirish ekrani -->
 <div id="login" class="hidden">
  <div class="stage">
@@ -333,6 +397,7 @@ details.arch{margin-top:24px;border-top:1px solid var(--line);padding-top:8px}de
  <div class="brand"><div class="mark"><img src="logo-256.png" alt="Kompyuter xizmatlari №1 logotipi"></div><div><b id="shopName">BUSINESS PRO</b><small id="shopSub">Kompyuter xizmatlari №1</small></div></div>
  <nav class="nav">
   <button class="tab active" data-tab="sale"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg><span class="l">Savdo</span><span class="s">Savdo</span></button>
+  <button class="tab" data-tab="orders"><svg viewBox="0 0 24 24"><path d="M3 13h5l1.5 3h5l1.5-3h5"/><path d="M5.5 5h13l2.5 8v6H3v-6z"/></svg><span class="l">Buyurtmalar</span><span class="s">Zakaz</span><b class="nbadge hidden" id="ordBadge"></b></button>
   <button class="tab" data-tab="stock"><svg viewBox="0 0 24 24"><path d="M3 7.5 12 3l9 4.5-9 4.5z"/><path d="M3 7.5v9L12 21l9-4.5v-9"/><path d="M12 12v9"/></svg><span class="l">Ombor</span><span class="s">Ombor</span></button>
   <button class="tab" data-tab="debt"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M17 4.5v7M14.5 7h5"/></svg><span class="l">Qarzlar</span><span class="s">Qarzlar</span></button>
   <button class="tab" data-tab="expense"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 10h18"/><path d="M15 15h3"/></svg><span class="l">Xarajatlar</span><span class="s">Xarajat</span></button>
@@ -371,11 +436,18 @@ details.arch{margin-top:24px;border-top:1px solid var(--line);padding-top:8px}de
 <h3>Oxirgi savdolar</h3><div id="salesTable"></div>
 </section>
 
+<section id="orders" class="panel hidden">
+<div class="rep-head"><div><h2 style="margin:0">Telegram buyurtmalar</h2><p class="hint" style="margin:3px 0 0" id="botLine"></p></div>
+ <button class="sm" id="notifBtn">🔔 Bildirishnomani yoqish</button></div>
+<div class="exsum" id="ordFilter"></div>
+<div class="olist" id="ordList"></div>
+</section>
+
 <section id="stock" class="panel hidden"><h2>Ombor kirimi</h2><div class="row">
 <div class="field"><label>Mahsulot nomi</label><input id="stockName" placeholder="Masalan: A4 qog‘oz" list="stockNames"></div>
 <div class="field"><label>Miqdor</label><input id="stockQty" type="number" min="1" value="1" inputmode="numeric"></div>
 <div class="field"><label>Birlik</label><select id="stockUnit"><option>dona</option><option>quti</option><option>pachka</option><option>list</option><option>metr</option><option>litr</option></select></div>
-<div class="field"><label>1 birlik narxi (so‘m)</label><input id="stockCost" type="number" min="0" value="0" inputmode="numeric"></div>
+<div class="field"><label>1 birlik kirim narxi (so‘m)</label><input id="stockCost" type="number" min="0" inputmode="numeric" placeholder="Yangi tovar uchun"></div>
 <button class="primary" id="addStock">Kirim qilish</button></div>
 <datalist id="stockNames"></datalist>
 <p class="hint">Ombor xaridi oylik hisobotda «Pul harakati» qismida ko‘rinadi (qancha pul ishlatilgani). Foydaga esa sotilgan xizmat tannarxi orqali ta’sir qiladi.</p>
@@ -391,7 +463,14 @@ details.arch{margin-top:24px;border-top:1px solid var(--line);padding-top:8px}de
 <div class="field" style="flex:1.5"><label>Izoh</label><input id="expenseName" placeholder="Masalan: 5 pachka qog‘oz"></div>
 <div class="field"><label>Summa (so‘m)</label><input id="expenseAmount" type="number" min="1" inputmode="numeric"></div>
 <button class="primary" id="addExpense">Saqlash</button></div>
-<h3>Shu oy xarajatlari <span class="muted" id="expMonthSum"></span></h3><div id="expenseTable"></div></section>
+<h3>Xarajatlar ro‘yxati</h3>
+<div class="row">
+ <div class="field" style="max-width:230px"><label for="exMonth">Oy</label><select id="exMonth"></select></div>
+ <div class="field" style="max-width:250px"><label for="exCat">Turi</label><select id="exCat"></select></div>
+ <div class="field"><label for="exQ">Qidirish</label><input id="exQ" type="search" placeholder="Izoh bo‘yicha, masalan: qog‘oz" autocomplete="off"></div>
+</div>
+<div class="exsum" id="exSum"></div>
+<div id="expenseTable"></div></section>
 
 <section id="services" class="panel hidden"><h2>Xizmat va mahsulotlar</h2><div class="row">
 <div class="field" style="max-width:190px"><label>Turi</label><select id="serviceType"><option value="xizmat">🛠 Xizmat</option><option value="mahsulot">📦 Mahsulot</option></select></div>
@@ -399,8 +478,9 @@ details.arch{margin-top:24px;border-top:1px solid var(--line);padding-top:8px}de
 <div class="field"><label>Sotuv narxi (so‘m)</label><input id="servicePrice" type="number" min="0" inputmode="numeric"></div>
 <div class="field"><label>Tannarxi (so‘m)</label><input id="serviceCost" type="number" min="0" value="0" inputmode="numeric"></div>
 <div class="field"><label>Ombordan ayiradi</label><select id="serviceStock"></select></div>
+<div class="field" style="max-width:170px"><label>Kartochka rangi</label><select id="serviceColor"></select></div>
 <button class="primary" id="addService">Qo‘shish</button></div>
-<p class="hint"><b>Xizmat</b> — siz bajaradigan ish (foto, print, ta’mirlash). <b>Mahsulot</b> — tayyor narsa sotasiz (fleshka, kabel…). Mahsulotni ombordagi tovarga bog‘lang — sotilganda ombor qoldig‘i o‘zi kamayadi. Ombor bo‘limidagi «Sotuvga» tugmasi bilan ham tez qo‘shish mumkin.</p>
+<p class="hint">Jadvalda har bir kartochkaga <b>rang</b> yoki <b>rasm</b> berishingiz mumkin (📷 Rasm). <b>Xizmat</b> — siz bajaradigan ish (foto, print, ta’mirlash). <b>Mahsulot</b> — tayyor narsa sotasiz (fleshka, kabel…). Mahsulotni ombordagi tovarga bog‘lang — sotilganda ombor qoldig‘i o‘zi kamayadi. Ombor bo‘limidagi «Sotuvga» tugmasi bilan ham tez qo‘shish mumkin.</p>
 <div id="serviceTable"></div></section>
 
 <section id="reports" class="panel hidden">
@@ -408,6 +488,7 @@ details.arch{margin-top:24px;border-top:1px solid var(--line);padding-top:8px}de
  <div><h2 style="margin:0">Hisobotlar</h2><p class="hint" style="margin:3px 0 0">Oyni bosing — shu oyning foydasi, xarajati va diagrammalari ochiladi</p></div>
  <div class="yearsw"><button id="yPrev" aria-label="Oldingi yil">‹</button><b id="yLabel"></b><button id="yNext" aria-label="Keyingi yil">›</button></div>
 </div>
+<div class="weekcard" id="weekBox"></div>
 <div class="kpis" id="yearKpis"></div>
 <p class="hint">Chiqim = sotilgan xizmatlar tannarxi + xarajatlar (rasxod). Sof foyda = Tushum − Chiqim.</p>
 <div class="chartcard"><div class="chead"><h3 id="yChartTitle">Yil davomida</h3>
@@ -430,6 +511,22 @@ details.arch{margin-top:24px;border-top:1px solid var(--line);padding-top:8px}de
  <input type="file" id="avatarFile" accept="image/*" class="hidden"></div></div>
 <h3>Hisob va sinxronlash</h3>
 <div class="acct" id="acctBox"></div>
+<h3>Telegram bot</h3>
+<div class="acct" id="botBox"></div>
+<div class="row" style="margin-top:12px">
+ <div class="field"><label for="setChan">Majburiy obuna kanali</label><input id="setChan" placeholder="@kanal_nomi yoki https://t.me/kanal_nomi" autocomplete="off"></div>
+ <div class="field"><label for="setChanLink">Kanal havolasi <span class="muted">(faqat yopiq kanal uchun)</span></label><input id="setChanLink" placeholder="https://t.me/+AbCdEf..." autocomplete="off"></div>
+ <button class="primary" id="chanSave">Saqlash va tekshirish</button>
+</div>
+<p class="hint">Kanal yozilsa, bot mijozdan avval shu kanalga <b>obuna bo‘lishni</b> so‘raydi va tekshiradi. Buning uchun botni kanalga <b>administrator</b> qilib qo‘shing (kanal → Administratorlar → Admin qo‘shish → botingiz). Bo‘sh qoldirilsa, obuna talab qilinmaydi.</p>
+<div id="chanStatus"></div>
+<h3>O‘chirish paroli</h3>
+<div class="acct" id="pinBox"></div>
+<h3>O‘chirishlar tarixi <span class="muted" style="font-weight:500">(joriy va o‘tgan oy)</span></h3>
+<p class="hint" style="margin-top:0">Har bir o‘chirish shu yerga yoziladi: nima, qachon, kim va qaysi qurilmadan.</p>
+<div id="auditTable"></div>
+<h3>Ilova ko‘rinishi</h3>
+<label class="chk" style="margin:0"><input type="checkbox" id="fxToggle"> Animatsiyali RGB fon <span class="muted">(shu qurilma uchun; telefon batareyasini tejash uchun o‘chirib qo‘yish mumkin)</span></label>
 <h3>Ilova sifatida o‘rnatish</h3>
 <div class="actions"><button class="primary hidden" id="installBtn">⬇ Ilovani o‘rnatish</button></div>
 <p class="hint" id="installHint">Kompyuter (Chrome/Edge): manzil satridagi «O‘rnatish» belgisini bosing. Android (Chrome): ⋮ menyu → «Ilovani o‘rnatish». iPhone (Safari): «Ulashish» → «Bosh ekranga qo‘shish».</p>
@@ -438,10 +535,12 @@ details.arch{margin-top:24px;border-top:1px solid var(--line);padding-top:8px}de
 <div class="field"><label>Do‘kon nomi</label><input id="setShop"></div>
 <div class="field"><label>Qo‘shimcha yozuv</label><input id="setSub"></div>
 <div class="field"><label>Oylik tushum maqsadi (so‘m)</label><input id="setGoal" type="number" min="0" inputmode="numeric"></div>
+<div class="field"><label>Do‘kon telefoni (botda ko‘rinadi)</label><input id="setPhone" placeholder="+998 90 123 45 67"></div>
+<div class="field" style="flex:1.6"><label>Manzil (botda ko‘rinadi)</label><input id="setAddr" placeholder="Sayxunobod, markaziy bozor yonida"></div>
 <button class="primary" id="saveSettings">Saqlash</button></div>
 <h3>Zaxira nusxa</h3>
 <p class="hint" id="backupHint"></p>
-<div class="actions" style="margin-top:10px"><button id="export">Zaxira nusxasini yuklab olish</button><button id="importBtn">Zaxira nusxasini tiklash</button><input id="importFile" type="file" accept="application/json" class="hidden"></div>
+<div class="actions" style="margin-top:10px"><button id="export">Zaxira nusxasini yuklab olish</button><button id="importBtn">Zaxira nusxasini tiklash</button><input id="importFile" type="file" accept="application/json" class="hidden"><input id="svcImgFile" type="file" accept="image/*" class="hidden"></div>
 <p class="hint" id="lastBackup"></p>
 </section>
 </main>
@@ -461,10 +560,25 @@ details.arch{margin-top:24px;border-top:1px solid var(--line);padding-top:8px}de
   <div class="sm-actions"><button id="smCancel">Bekor qilish</button><button class="primary" id="smSave">Saqlash</button></div>
  </div>
 </div>
+<div id="pinModal" class="modal hidden">
+ <div class="sheet pin-sheet" role="dialog" aria-modal="true" aria-labelledby="pinTitle">
+  <div class="sm-head"><div><span class="pill r xs">🔒 Himoyalangan amal</span><h2 id="pinTitle">Parolni kiriting</h2><p class="hint" id="pinSub" style="margin:4px 0 0;white-space:pre-line"></p></div><button class="sm-x" id="pinClose" aria-label="Yopish">×</button></div>
+  <div class="pin-dots" id="pinDots" aria-live="polite"><i></i><i></i><i></i><i></i></div>
+  <div class="pin-msg" id="pinMsg"></div>
+  <div class="pin-pad" id="pinPad">
+   <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+   <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+   <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+   <button data-k="x" class="pk-aux">Bekor</button><button data-k="0">0</button><button data-k="b" class="pk-aux" aria-label="O‘chirish">⌫</button>
+  </div>
+  <a href="#" id="pinForgot" class="pin-forgot">Parolni unutdim</a>
+ </div>
+</div>
 <div id="toast"></div>
 <div id="printArea"></div>
 <script src="vendor/crystal-ball.js"></script>
 <script src="vendor/reflective-card.js"></script>
+<script src="vendor/micro-slats.js"></script>
 <script>
 
 "use strict";
@@ -476,7 +590,7 @@ const defaults=[
 ["Dizayn xizmati",0,0],["Kompyuter ta’mirlash",0,0]
 ];
 const KEY="businessProDB";
-const COLS=["services","stock","debts","sales","expenses","payments","stockIn"];
+const COLS=["services","stock","debts","sales","expenses","payments","stockIn","audit","orders"];
 const $=id=>document.getElementById(id);
 const pad=n=>String(n).padStart(2,"0");
 // Mahalliy sana (UTC emas)
@@ -527,7 +641,7 @@ const cloud={on:false,uid:null,email:"",token:null,seq:"0",base:null,outbox:[],a
 const LS=k=>"bp_"+k+"_"+cloud.uid;
 const lsGet=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??d}catch{return d}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){toast("Qurilma xotirasi to‘ldi — zaxira nusxa oling")}};
-const emptyBase=()=>({services:[],stock:[],debts:[],sales:[],expenses:[],payments:[],stockIn:[],archive:{},settings:{}});
+const emptyBase=()=>({services:[],stock:[],debts:[],sales:[],expenses:[],payments:[],stockIn:[],audit:[],orders:[],archive:{},settings:{}});
 
 async function api(path,opt={}){
  let r;
@@ -642,6 +756,7 @@ document.addEventListener("visibilitychange",()=>{if(cloud.on&&document.visibili
 setInterval(()=>{if(cloud.on){flush();sync()}},30000);
 
 function startServer(user){
+ seenOrders=null;setTimeout(loadBotInfo,1500);
  closeEvents();
  Object.assign(cloud,{on:true,uid:user.id,email:user.email,acked:[],ackN:0,booted:false,fresh:false,lastOk:true,retry:0,syncing:false,needSync:false});
  cloud.outbox=lsGet(LS("outbox"),[]);
@@ -692,14 +807,14 @@ function clearSplashT(){splashT.forEach(clearTimeout);splashT=[]}
 function runSplash(mode){
  const o=$("login");clearSplashT();
  o.classList.remove("hidden","ready","leaving","open-only","show-brand");if(mode==="open")o.classList.add("open-only");
- mountBall();splashT.push(setTimeout(()=>o.classList.add("show-brand"),40));
+ unmountFx();mountBall();splashT.push(setTimeout(()=>o.classList.add("show-brand"),40));
  const next=()=>{clearSplashT();if(o.classList.contains("open-only"))closeSplash();else{o.classList.add("ready");if(!matchMedia("(max-width:900px)").matches)setTimeout(()=>$("lEmail").focus(),700)}};
  splashT.push(setTimeout(next,REDUCED?600:(mode==="open"?2300:2700)));
  o.onclick=e=>{if(!o.classList.contains("ready")&&!e.target.closest(".lcard"))next()};
 }
 function closeSplash(){
  const o=$("login");clearSplashT();o.classList.add("leaving");
- splashT.push(setTimeout(()=>{o.classList.add("hidden");o.classList.remove("leaving","ready","open-only","show-brand");unmountBall()},650));
+ splashT.push(setTimeout(()=>{o.classList.add("hidden");o.classList.remove("leaving","ready","open-only","show-brand");unmountBall();mountFx()},650));
 }
 function showLogin(msg){
  const o=$("login");lmsg(msg||"");setSync("loading");
@@ -813,7 +928,7 @@ function render(){
 
  // Ombor
  $("stockNames").innerHTML=db.stock.map(x=>`<option value="${esc(x.name)}">`).join("");
- $("stockTable").innerHTML=table(["Mahsulot","Qoldiq","Birlik","1 birlik narxi","Qiymati",""],db.stock.map(x=>`<tr class="${x.qty<=5?"low":""}"><td>${esc(x.name)} ${x.qty<=5?'<span class="pill a">kam qoldi</span>':""}</td><td class="n">${x.qty}</td><td>${esc(x.unit)}</td><td class="n">${money(x.cost)}</td><td class="n">${money(x.cost*Math.max(0,x.qty))}</td><td class="actions">${db.services.some(s=>String(s.stockId)===String(x.id))?"":`<button class="ok sm" onclick="stockToProduct(${x.id})">Sotuvga</button>`}<button class="sm" onclick="writeOff(${x.id})">Chiqim</button></td></tr>`),[1,3,4])
+ $("stockTable").innerHTML=table(["Mahsulot","Qoldiq","Birlik","1 birlik narxi","Qiymati",""],db.stock.map(x=>`<tr class="${x.qty<=5?"low":""}"><td>${esc(x.name)} ${x.qty<=0?'<span class="pill r">tugagan</span>':x.qty<=5?'<span class="pill a">kam qoldi</span>':""}</td><td class="n">${x.qty}</td><td>${esc(x.unit)}</td><td class="n">${money(x.cost)}</td><td class="n">${money(x.cost*Math.max(0,x.qty))}</td><td class="actions">${db.services.some(s=>String(s.stockId)===String(x.id))?"":`<button class="ok sm" onclick="stockToProduct(${x.id})">Sotuvga</button>`}<button class="sm" onclick="writeOff(${x.id})">Chiqim</button><button class="danger sm" onclick="delStock(${x.id})">O‘chirish</button></td></tr>`),[1,3,4])
   +`<p class="hint">Ombordagi jami qiymat: <b>${money(sum(db.stock,x=>x.cost*Math.max(0,x.qty)))}</b></p>`;
  $("stockInTable").innerHTML=table(["Sana","Mahsulot","Miqdor","Jami summa"],db.stockIn.slice(-10).reverse().map(x=>`<tr><td>${fmtDate(x.date)}</td><td>${esc(x.name)}</td><td class="n">${x.qty} ${esc(x.unit)}</td><td class="n">${money(x.total)}</td></tr>`),[2,3]);
 
@@ -823,22 +938,27 @@ function render(){
 
  // Xarajatlar
  if(!$("expenseDate").value)$("expenseDate").value=t;
- const me=db.expenses.filter(x=>x.date.startsWith(ym));$("expMonthSum").textContent="— "+money(sum(me,x=>x.amount));
- $("expenseTable").innerHTML=table(["Sana","Turi","Izoh","Summa",""],me.slice().reverse().map(x=>`<tr><td>${fmtDate(x.date)}</td><td>${esc(x.category)}</td><td>${esc(x.name)}</td><td class="n">${money(x.amount)}</td><td><button class="danger sm" onclick="delExpense(${x.id})">O‘chirish</button></td></tr>`),[3]);
+ renderExpenses();
 
  // Xizmatlar
  const stockOpts=id=>`<option value="">— yo‘q —</option>`+db.stock.map(s=>`<option value="${s.id}" ${String(s.id)===String(id)?"selected":""}>${esc(s.name)} (${esc(s.unit)})</option>`).join("");
  if(notFocused("serviceStock")){const cur=$("serviceStock").value;$("serviceStock").innerHTML=stockOpts(cur)}
- $("serviceTable").innerHTML=table(["Turi","Nomi","Narx","Tannarx","Foyda (1 dona)","Ombordan ayiradi",""],db.services.map(x=>`<tr><td><select style="min-width:118px" onchange="editService(${x.id},'type',this.value)"><option value="xizmat"${(x.type||"xizmat")==="xizmat"?" selected":""}>🛠 Xizmat</option><option value="mahsulot"${x.type==="mahsulot"?" selected":""}>📦 Mahsulot</option></select></td><td><input style="min-width:150px" value="${esc(x.name)}" onchange="editService(${x.id},'name',this.value)"></td><td><input style="width:120px" type="number" value="${x.price}" onchange="editService(${x.id},'price',this.value)"></td><td><input style="width:120px" type="number" value="${x.cost}" onchange="editService(${x.id},'cost',this.value)"></td><td class="n ${x.price-x.cost<0?"neg":"pos"}">${money(x.price-x.cost)}</td><td><select style="min-width:150px" onchange="editService(${x.id},'stockId',this.value)">${stockOpts(x.stockId)}</select></td><td><button class="danger sm" onclick="delService(${x.id})">O‘chirish</button></td></tr>`),[4]);
+ const colorOpts=c=>CARD_COLORS.map(([v,n])=>`<option value="${v}"${(c==="silver"?"silver":okColor(c))===v?" selected":""}>${n}</option>`).join("");
+ const iconOpts=x=>`<option value="">Avtomatik: ${esc(CARD_ICONS[autoIcon(x)].n)}</option>`+Object.entries(CARD_ICONS).map(([k,v])=>`<option value="${k}"${x.icon===k?" selected":""}>${esc(v.n)}</option>`).join("");
+ const look=x=>`<div class="lookcell"><span class="emb-sm" style="${cardColor(x)?`--acc:${cardColor(x)}`:""}">${iconSvg(iconKey(x))}</span><select style="width:150px;min-width:0" title="Belgi" onchange="editService(${x.id},'icon',this.value)">${iconOpts(x)}</select><select style="width:112px;min-width:0" title="Kartochka rangi" onchange="editService(${x.id},'color',this.value)">${colorOpts(x.color)}</select>`+
+  (okImg(x.img)?`<img class="thumb" src="${okImg(x.img)}" alt=""><button class="danger sm" title="Rasmni olib tashlash" onclick="editService(${x.id},'img','')">✕</button>`:"")+
+  `<button class="sm" title="${okImg(x.img)?"Rasmni almashtirish":"Rasm qo‘yish"}" onclick="pickSvcImg(${x.id})">📷</button></div>`;
+ const linkedCost=x=>{const st=x.type==="mahsulot"&&x.stockId?findById("stock",x.stockId):null;return st?Number(st.cost)||0:null};
+ $("serviceTable").innerHTML=table(["Turi","Nomi","Narx","Tannarx","Foyda (1 dona)","Ombordan ayiradi","Kartochka ko‘rinishi",""],db.services.map(x=>`<tr><td><select style="width:122px;min-width:0" onchange="editService(${x.id},'type',this.value)"><option value="xizmat"${(x.type||"xizmat")==="xizmat"?" selected":""}>🛠 Xizmat</option><option value="mahsulot"${x.type==="mahsulot"?" selected":""}>📦 Mahsulot</option></select></td><td><input style="min-width:170px" value="${esc(x.name)}" onchange="editService(${x.id},'name',this.value)"></td><td><input style="width:104px;min-width:0" type="number" value="${x.price}" onchange="editService(${x.id},'price',this.value)"></td><td>${linkedCost(x)!==null?`<span title="Ombordagi kirim narxidan olinadi">${money(linkedCost(x))}</span><br><span class="muted" style="font-size:12px">ombordan</span>`:`<input style="width:96px;min-width:0" type="number" value="${x.cost}" onchange="editService(${x.id},'cost',this.value)">`}</td><td class="n ${x.price-(linkedCost(x)??x.cost)<0?"neg":"pos"}">${money(x.price-(linkedCost(x)??x.cost))}</td><td><select style="width:140px;min-width:0" onchange="editService(${x.id},'stockId',this.value)">${stockOpts(x.stockId)}</select></td><td>${look(x)}</td><td><button class="danger sm" onclick="delService(${x.id})">O‘chirish</button></td></tr>`),[5]);
 
  renderReports();
  // Sozlamalar
- if(notFocused("setShop"))$("setShop").value=db.settings.shop;if(notFocused("setSub"))$("setSub").value=db.settings.sub;if(notFocused("setGoal"))$("setGoal").value=db.settings.goal||"";
+ if(notFocused("setShop"))$("setShop").value=db.settings.shop;if(notFocused("setSub"))$("setSub").value=db.settings.sub;if(notFocused("setChan"))$("setChan").value=db.settings.tgChannel||"";if(notFocused("setChanLink"))$("setChanLink").value=db.settings.tgChannelLink||"";if(notFocused("setPhone"))$("setPhone").value=db.settings.shopPhone||"";if(notFocused("setAddr"))$("setAddr").value=db.settings.shopAddr||"";if(notFocused("setGoal"))$("setGoal").value=db.settings.goal||"";
  $("lastBackup").textContent=db.settings.lastBackup?"Oxirgi zaxira: "+new Date(db.settings.lastBackup).toLocaleString("uz-UZ"):"Hali zaxira nusxa olinmagan.";
  $("acctBox").innerHTML=cloud.on
   ?`<span>☁ Kirgan hisob: <b>${esc(cloud.email)}</b></span><span class="muted">Shu email va parol bilan telefonda ham kiring — ma’lumotlar bir xil bo‘ladi.</span><span class="actions" style="margin-left:auto"><button class="sm" onclick="changePass()">Parolni o‘zgartirish</button><button class="danger sm" onclick="logout()">Chiqish</button></span>`
   :SERVER?`<span class="muted">Kirilmagan</span>`:`<span>💾 <b>Lokal rejim</b> — fayl sifatida ochilgan, ma’lumotlar faqat shu qurilmada.</span><span class="muted">Telefon va kompyuterni bog‘lash uchun ilovani server manzili orqali oching.</span>`;
- renderAvatars();
+ renderAvatars();renderAudit();renderOrders();renderBotBox();if(cloud.on&&cloud.fresh)checkNewOrders();
  $("backupHint").textContent=cloud.on?"Ma’lumotlar serverda saqlanadi. Qo‘shimcha xavfsizlik uchun oyiga bir marta zaxira nusxa olib qo‘ying.":"Ma’lumotlar shu qurilma brauzerida saqlanadi. Har hafta zaxira nusxa oling va telefon/Telegram’ga saqlab qo‘ying.";
 }
 
@@ -912,6 +1032,7 @@ function donutChart(byCat,total){
  <div class="dleg">${items.map(([k,v],i)=>`<div><i style="background:${DCOL[i%DCOL.length]}"></i><span>${esc(k)} <span class="muted">${(v/total*100).toFixed(0)}%</span></span><span>${money(v)}</span></div>`).join("")}</div></div>`;
 }
 function renderReports(){
+ renderWeek();
  const cur=thisYM(),has=monthsWithData(),years=[...has].map(m=>+m.slice(0,4)),minY=Math.min(+cur.slice(0,4),...years);
  if(!repMonth.startsWith(String(repYear)))repMonth=yearMonths(repYear).filter(m=>m<=cur).reverse().find(m=>has.has(m))||(String(repYear)===cur.slice(0,4)?cur:`${repYear}-12`);
  const info=yearInfo(repYear);
@@ -989,41 +1110,171 @@ $("pdfYear").onclick=()=>{
 };
 window.dismiss=ym=>{S.settings({pendingPdf:db.settings.pendingPdf.filter(x=>x!==ym)});commit()};
 window.showMonth=m=>{repYear=+m.slice(0,4);pickMonth(m);$("monthDetailHead").scrollIntoView({behavior:"smooth",block:"start"})};
-window.reopen=m=>{if(confirm(ymName(m)+" oyi qayta ochilsinmi? Tuzatishlarni kiritgach, «Yopish» tugmasini bosing.")){S.del("archive",m);S.settings({reopened:[...db.settings.reopened.filter(x=>x!==m),m]});commit();toast(ymName(m)+" qayta ochildi")}};
+window.reopen=async m=>{if(!await askPin({title:`${ymName(m)} oyini qayta ochish`,detail:"Yopilgan oy qayta ochiladi va uni o‘zgartirish mumkin bo‘ladi. Tuzatishlarni kiritgach, «Yopish» tugmasini bosing."}))return;
+ S.del("archive",m);S.settings({reopened:[...db.settings.reopened.filter(x=>x!==m),m]});logAction("Oy qayta ochildi",ymName(m),0);commit();toast(ymName(m)+" qayta ochildi")};
 window.closeMonth=m=>{S.put("archive",{...summary(m),closedAt:new Date().toISOString()});S.settings({reopened:db.settings.reopened.filter(x=>x!==m)});commit();toast(ymName(m)+" yopildi va arxivga saqlandi")};
 window.logout=()=>{const n=cloud.outbox.length;if(confirm(n?`${n} ta o‘zgarish hali serverga yetib bormagan (internet kelganda yuboriladi). Baribir chiqilsinmi?`:"Hisobdan chiqilsinmi?"))logoutLocal()};
 window.changePass=async()=>{const old=prompt("Hozirgi parol:");if(old==null)return;const nw=prompt("Yangi parol (kamida 6 belgi):");if(!nw)return;
  try{await api("/api/password",{method:"POST",body:{old,password:nw}});toast("Parol o‘zgartirildi ✓")}catch(e){toast(e.message)}};
 
+/* ---------- Xarajatlar filtri ---------- */
+const exF={month:null,cat:"",q:""};
+const EXP_CATS=[...document.querySelectorAll("#expenseCat option")].map(o=>o.textContent);
+function expensesOf(m){const loaded=db.expenses.filter(x=>x.date&&x.date.startsWith(m));return loaded.length?loaded:((db.archive[m]&&db.archive[m].expenses)||[])}
+function renderExpenses(){
+ const months=allMonths();if(!exF.month||(exF.month!=="all"&&!months.includes(exF.month)))exF.month=thisYM();
+ $("exMonth").innerHTML=`<option value="all">Barcha oylar</option>`+months.map(m=>`<option value="${m}">${ymName(m)}</option>`).join("");$("exMonth").value=exF.month;
+ let list=exF.month==="all"?months.flatMap(expensesOf):expensesOf(exF.month);
+ const cats=[...new Set([...EXP_CATS,...list.map(x=>x.category).filter(Boolean)])];
+ $("exCat").innerHTML=`<option value="">Hammasi</option>`+cats.map(c=>`<option>${esc(c)}</option>`).join("");$("exCat").value=cats.includes(exF.cat)?exF.cat:"";
+ const q=exF.q.trim().toLowerCase();
+ const inMonth=list;list=list.filter(x=>(!exF.cat||x.category===exF.cat)&&(!q||String(x.name||"").toLowerCase().includes(q)));
+ list=list.slice().sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:0);
+ const byCat={};inMonth.forEach(x=>byCat[x.category]=(byCat[x.category]||0)+x.amount);
+ $("exSum").innerHTML=`<span>Jami: <b>${money(sum(list,x=>x.amount))}</b> <span class="muted">· ${list.length} ta</span></span>`+
+  Object.entries(byCat).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<button class="chip${exF.cat===k?" on":""}" data-cat="${esc(k)}">${esc(k)}: ${short(v)}</button>`).join("");
+ $("exSum").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{exF.cat=exF.cat===b.dataset.cat?"":b.dataset.cat;renderExpenses()});
+ const shown=list.slice(0,300);
+ $("expenseTable").innerHTML=table(["Sana","Turi","Izoh","Summa",""],shown.map(x=>`<tr><td>${fmtDate(x.date)}</td><td>${esc(x.category)}</td><td>${esc(x.name)}</td><td class="n">${money(x.amount)}</td><td>${x.id&&!isClosed(x.date)?`<button class="danger sm" onclick="delExpense(${x.id})">O‘chirish</button>`:'<span class="muted">yopilgan</span>'}</td></tr>`),[3])
+  +(list.length>shown.length?`<p class="hint">Birinchi ${shown.length} tasi ko‘rsatildi — filtrni toraytiring.</p>`:"");
+}
+$("exMonth").onchange=e=>{exF.month=e.target.value;renderExpenses()};
+$("exCat").onchange=e=>{exF.cat=e.target.value;renderExpenses()};
+$("exQ").oninput=e=>{exF.q=e.target.value;renderExpenses()};
+
+/* ---------- O‘chirish paroli (4 xonali PIN) ---------- */
+async function pinHash(pin,salt){
+ const data=new TextEncoder().encode(`bp-pin:${salt}:${pin}`);
+ if(window.crypto&&crypto.subtle){const h=await crypto.subtle.digest("SHA-256",data);return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,"0")).join("")}
+ let h=2166136261;for(const b of data){h^=b;h=Math.imul(h,16777619)>>>0}return "f"+h.toString(16);
+}
+const PIN_LOCK="bp_pinlock";
+const pinLock=()=>lsGet(PIN_LOCK,{n:0,until:0});
+let pinState=null;
+// askPin: to‘g‘ri parol kiritilsa true, bekor qilinsa false. Parol hali o‘rnatilmagan bo‘lsa — avval o‘rnatishni so‘raydi.
+function askPin(opt={}){
+ return new Promise(resolve=>{
+  if(pinState)pinState.resolve(false);
+  const has=!!db.settings.pinHash;
+  pinState={mode:opt.mode||(has?"check":"set1"),buf:"",first:"",opt,resolve,firstTime:!has&&!opt.mode};
+  $("pinMsg").textContent="";const m=$("pinModal");m.classList.remove("hidden");requestAnimationFrame(()=>requestAnimationFrame(()=>m.classList.add("open")));
+  pinRender();
+ });
+}
+function pinRender(){
+ const st=pinState;if(!st)return;
+ const titles={check:st.opt.title||"Parolni kiriting",set1:"Yangi 4 xonali parol",set2:"Parolni takrorlang"};
+ const subs={check:st.opt.detail||"Davom etish uchun o‘chirish parolini kiriting.",
+  set1:st.firstTime?"O‘chirishlar parol bilan himoyalanadi. 4 ta raqamdan iborat parol o‘ylab toping — keyingi har bir o‘chirishda so‘raladi.\n"+(st.opt.detail?"\n"+st.opt.detail:""):"Yangi parolni kiriting.",
+  set2:"Xuddi shu 4 ta raqamni yana bir marta kiriting."};
+ $("pinTitle").textContent=titles[st.mode];$("pinSub").textContent=subs[st.mode];
+ $("pinDots").querySelectorAll("i").forEach((d,i)=>d.classList.toggle("on",i<st.buf.length));
+ $("pinForgot").style.display=st.mode==="check"?"":"none";
+ const lk=pinLock(),locked=lk.until>Date.now();
+ $("pinPad").querySelectorAll("button").forEach(b=>{if(b.dataset.k!=="x")b.disabled=locked});
+ if(locked){$("pinMsg").textContent=`Ko‘p marta xato kiritildi. ${Math.ceil((lk.until-Date.now())/1000)} soniyadan keyin urinib ko‘ring.`;setTimeout(pinRender,1000)}
+}
+function pinFail(msg){
+ const d=$("pinDots");d.classList.remove("shake");void d.offsetWidth;d.classList.add("shake","err");setTimeout(()=>d.classList.remove("err"),450);
+ $("pinMsg").textContent=msg;if(navigator.vibrate)navigator.vibrate(120);
+}
+function pinFinish(ok){
+ const st=pinState;if(!st)return;pinState=null;
+ const m=$("pinModal");m.classList.remove("open");setTimeout(()=>{if(!m.classList.contains("open"))m.classList.add("hidden")},220);
+ st.resolve(ok);
+}
+async function pinSubmit(){
+ const st=pinState;if(!st)return;const pin=st.buf;
+ if(st.mode==="check"){
+  const ok=(await pinHash(pin,db.settings.pinSalt||""))===db.settings.pinHash;
+  if(ok){lsSet(PIN_LOCK,{n:0,until:0});return pinFinish(true)}
+  const lk=pinLock();lk.n=(lk.n||0)+1;if(lk.n>=5){lk.until=Date.now()+60000;lk.n=0}lsSet(PIN_LOCK,lk);
+  st.buf="";pinFail(lk.until>Date.now()?"5 marta xato. 1 daqiqa kuting.":`Parol noto‘g‘ri. Yana ${5-lk.n} ta urinish qoldi.`);pinRender();
+ }else if(st.mode==="set1"){st.first=pin;st.mode="set2";st.buf="";$("pinMsg").textContent="";pinRender()}
+ else if(st.mode==="set2"){
+  if(pin!==st.first){st.mode="set1";st.buf="";st.first="";pinFail("Parollar mos kelmadi. Qaytadan kiriting.");return pinRender()}
+  const salt=Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+  S.settings({pinHash:await pinHash(pin,salt),pinSalt:salt});commit();toast("🔒 O‘chirish paroli saqlandi");pinFinish(true);
+ }
+}
+function pinKey(k){
+ const st=pinState;if(!st)return;
+ if(k==="x")return pinFinish(false);
+ if(pinLock().until>Date.now())return;
+ if(k==="b"){st.buf=st.buf.slice(0,-1);return pinRender()}
+ if(!/^\d$/.test(k)||st.buf.length>=4)return;
+ st.buf+=k;pinRender();if(st.buf.length===4)setTimeout(pinSubmit,120);
+}
+$("pinPad").querySelectorAll("button").forEach(b=>b.onclick=()=>pinKey(b.dataset.k));
+$("pinClose").onclick=()=>pinFinish(false);
+$("pinModal").addEventListener("click",e=>{if(e.target===$("pinModal"))pinFinish(false)});
+document.addEventListener("keydown",e=>{if(!pinState)return;
+ if(/^\d$/.test(e.key)){e.preventDefault();pinKey(e.key)}else if(e.key==="Backspace"){e.preventDefault();pinKey("b")}else if(e.key==="Escape"){e.preventDefault();pinKey("x")}},true);
+$("pinForgot").onclick=async e=>{e.preventDefault();const st=pinState;if(!st)return;
+ if(cloud.on){const pw=prompt(`Parolni tiklash uchun hisobingiz parolini kiriting\n(${cloud.email} bilan kirgandagi parol):`);if(pw==null)return;
+  try{await api("/api/login",{method:"POST",body:{email:cloud.email,password:pw}})}catch(err){return pinFail(err.status===401?"Hisob paroli noto‘g‘ri":err.message)}}
+ else if(!confirm("O‘chirish parolini yangisiga almashtirasizmi?"))return;
+ st.mode="set1";st.firstTime=false;st.buf="";st.first="";$("pinMsg").textContent="";pinRender();
+};
+// Sozlamalar: parolni boshqarish
+window.pinSetup=async()=>{if(db.settings.pinHash&&!await askPin({title:"Hozirgi parolni kiriting",detail:"Parolni o‘zgartirish uchun avval hozirgisini kiriting."}))return;await askPin({mode:"set1"})};
+window.pinRemove=async()=>{if(!await askPin({title:"Parolni olib tashlash",detail:"Hozirgi parolni kiriting. Shundan keyin o‘chirishlar parolsiz bajariladi (har safar parol o‘rnatish taklif qilinadi)."}))return;
+ S.settings({pinHash:null,pinSalt:null});commit();toast("O‘chirish paroli olib tashlandi")};
+
+/* ---------- O‘chirishlar tarixi ---------- */
+function logAction(action,detail,amount){
+ const d=new Date();
+ S.put("audit",{id:uid(),date:today(),time:`${pad(d.getHours())}:${pad(d.getMinutes())}`,action,detail:String(detail||""),amount:Number(amount)||0,
+  by:cloud.on?cloud.email:"Lokal",device:matchMedia("(max-width:900px)").matches?"Telefon":"Kompyuter"});
+}
+function renderAudit(){
+ $("pinBox").innerHTML=db.settings.pinHash
+  ?`<span>🔒 <b>O‘chirish paroli o‘rnatilgan.</b> Har qanday o‘chirishdan oldin so‘raladi.</span><span class="actions" style="margin-left:auto"><button class="sm" onclick="pinSetup()">Parolni o‘zgartirish</button><button class="danger sm" onclick="pinRemove()">Olib tashlash</button></span>`
+  :`<span>🔓 <b>O‘chirish paroli o‘rnatilmagan.</b> Birinchi o‘chirishda o‘rnatish so‘raladi.</span><span class="actions" style="margin-left:auto"><button class="primary sm" onclick="pinSetup()">Parol o‘rnatish</button></span>`;
+ const rows=(db.audit||[]).slice().sort((a,b)=>Number(b.id)-Number(a.id)).slice(0,100);
+ $("auditTable").innerHTML=table(["Sana","Amal","Nima","Summa","Kim / qurilma"],rows.map(x=>`<tr><td>${fmtDate(x.date)} <span class="muted">${esc(x.time||"")}</span></td><td><span class="pill r xs">${esc(x.action)}</span></td><td>${esc(x.detail)}</td><td class="n">${x.amount?money(x.amount):"—"}</td><td class="muted">${esc(x.by||"")} · ${esc(x.device||"")}</td></tr>`),[3]);
+}
+
 /* ---------- Amallar ---------- */
 const findById=(col,id)=>db[col].find(x=>String(x.id)===String(id));
-window.editService=(id,k,v)=>{if(k==="name"){v=String(v).trim();if(!v)return toast("Nom bo‘sh bo‘lmasin");S.patch("services",id,{name:v});commit();return toast("Nomi yangilandi")}
+window.editService=(id,k,v)=>{
+ if(k==="color"){S.patch("services",id,{color:v==="silver"?"silver":okColor(v)||null});commit();return}
+ if(k==="icon"){S.patch("services",id,{icon:CARD_ICONS[v]?v:null});commit();return}
+ if(k==="img"){S.patch("services",id,{img:okImg(v)||null});commit();return toast(v?"Rasm saqlandi":"Rasm olib tashlandi")}
+ if(k==="name"){v=String(v).trim();if(!v)return toast("Nom bo‘sh bo‘lmasin");S.patch("services",id,{name:v});commit();return toast("Nomi yangilandi")}
  S.patch("services",id,{[k]:k==="type"?(v==="mahsulot"?"mahsulot":"xizmat"):k==="stockId"?(v?Number(v):null):Number(v)||0});commit()};
 window.stockToProduct=id=>{const st=findById("stock",id);if(!st)return;
  const p=Number(prompt(`«${st.name}» sotuv narxi (1 ${st.unit}, so‘m):`,Math.round((st.cost||0)*1.3)||""));if(!(p>0))return;
  S.put("services",{id:uid(),type:"mahsulot",name:st.name,price:p,cost:st.cost||0,stockId:st.id});commit();toast("«"+st.name+"» sotuvga qo‘shildi");
  saleKind="mahsulot";syncKindSeg()};
-window.delService=id=>{if(confirm("Xizmat o‘chirilsinmi?")){S.del("services",id);commit()}};
+window.delService=async id=>{const x=findById("services",id);if(!x)return;
+ if(!await askPin({title:`«${x.name}» ni o‘chirish`,detail:`${x.type==="mahsulot"?"Mahsulot":"Xizmat"} kartochkasi o‘chiriladi. Oldingi savdolar va hisobotlar o‘zgarmaydi.`}))return;
+ S.del("services",id);logAction(x.type==="mahsulot"?"Mahsulot o‘chirildi":"Xizmat o‘chirildi",`${x.name} (narxi ${money(x.price)})`,0);commit();toast(`«${x.name}» o‘chirildi`)};
 window.payDebt=id=>{const d=findById("debts",id);if(!d)return;const v=Math.min(d.remaining,Number(prompt(`${d.customer} — qancha to‘lov qabul qilindi? (so‘m)`,d.remaining)));
  if(v>0){S.inc("debts",d.id,"remaining",-v);S.put("payments",{id:uid(),date:today(),debtId:d.id,customer:d.customer,amount:v});commit();toast("To‘lov qabul qilindi: "+money(v))}};
-window.delSale=id=>{const x=findById("sales",id);if(!x)return;if(isClosed(x.date))return toast("Bu oy yopilgan");
+window.delSale=async id=>{const x=findById("sales",id);if(!x)return;if(isClosed(x.date))return toast("Bu oy yopilgan");
  const d=db.debts.find(d=>String(d.saleId)===String(id));
  if(x.pay==="Qarz"&&(!d||d.remaining<d.amount))return toast("Bu qarz bo‘yicha to‘lov qilingan — savdoni o‘chirib bo‘lmaydi");
- if(!confirm(`«${x.name}» savdosi o‘chirilsinmi?`))return;
+ if(!await askPin({title:"Savdoni o‘chirish",detail:`${x.name} × ${x.qty} = ${money(x.total)} (${x.pay}, ${fmtDate(x.date)})`+(x.stockId?"\nTovar omborga qaytariladi.":"")}))return;
  if(x.stockId&&findById("stock",x.stockId))S.inc("stock",x.stockId,"qty",x.qty);
- S.del("sales",id);if(d)S.del("debts",d.id);commit();toast("Savdo o‘chirildi")};
-window.delExpense=id=>{const x=findById("expenses",id);if(!x)return;if(isClosed(x.date))return toast("Bu oy yopilgan");if(confirm("Xarajat o‘chirilsinmi?")){S.del("expenses",id);commit()}};
-window.writeOff=id=>{const st=findById("stock",id);if(!st)return;const v=Math.min(Math.max(0,st.qty),Number(prompt(`${st.name}: qancha chiqim qilinsin? (ishlatildi / buzildi)`,1))||0);if(v>0){S.inc("stock",id,"qty",-v);commit()}};
+ S.del("sales",id);if(d)S.del("debts",d.id);logAction("Savdo o‘chirildi",`${x.name} × ${x.qty} · ${x.pay}${x.customer&&x.customer!=="Noma’lum"?" · "+x.customer:""} · sana ${fmtDate(x.date)}`,x.total);commit();toast("Savdo o‘chirildi")};
+window.delExpense=async id=>{const x=findById("expenses",id);if(!x)return;if(isClosed(x.date))return toast("Bu oy yopilgan");
+ if(!await askPin({title:"Xarajatni o‘chirish",detail:`${x.category}: ${x.name} — ${money(x.amount)} (${fmtDate(x.date)})`}))return;
+ S.del("expenses",id);logAction("Xarajat o‘chirildi",`${x.category}: ${x.name} · sana ${fmtDate(x.date)}`,x.amount);commit();toast("Xarajat o‘chirildi")};
+window.writeOff=async id=>{const st=findById("stock",id);if(!st)return;const v=Math.min(Math.max(0,st.qty),Number(prompt(`${st.name}: qancha chiqim qilinsin? (ishlatildi / buzildi)`,1))||0);if(!(v>0))return;
+ if(!await askPin({title:"Ombordan chiqim",detail:`${st.name}: −${v} ${st.unit} (qoldiq ${st.qty} → ${st.qty-v})`}))return;
+ S.inc("stock",id,"qty",-v);logAction("Ombordan chiqim",`${st.name}: −${v} ${st.unit}`,v*(Number(st.cost)||0));commit();toast("Chiqim qilindi")};
 // Savdoni yozish (xizmat ham, mahsulot ham shu yerdan o‘tadi)
 function recordSale(s,q,price,pay,c){
  if(!price&&!confirm("Narx 0 so‘m. Shunday saqlansinmi?"))return false;
  if(pay==="Qarz"&&!c){toast("Qarz uchun mijoz ismini yozing");$("smCust").focus();return false}
  const st=s.stockId?findById("stock",s.stockId):null;
  if(st&&st.qty<q&&!confirm(`Omborda ${st.name} faqat ${st.qty} ${st.unit} qolgan. Baribir saqlansinmi?`))return false;
- const x={id:uid(),date:today(),serviceId:s.id,kind:s.type==="mahsulot"?"mahsulot":"xizmat",name:s.name,qty:q,price,total:price*q,cost:s.cost,pay,customer:c||"Noma’lum",stockId:st?st.id:null};
+ const unitCost=st&&s.type==="mahsulot"?Number(st.cost)||0:Number(s.cost)||0;
+ const x={id:uid(),date:today(),serviceId:s.id,kind:s.type==="mahsulot"?"mahsulot":"xizmat",name:s.name,qty:q,price,total:price*q,cost:unitCost,pay,customer:c||"Noma’lum",stockId:st?st.id:null};
  S.put("sales",x);if(st)S.inc("stock",st.id,"qty",-Math.min(q,Math.max(0,st.qty)));
  if(pay==="Qarz")S.put("debts",{id:uid(),date:x.date,saleId:x.id,customer:x.customer,amount:x.total,remaining:x.total});
- commit();toast(`Saqlandi: ${s.name} × ${q} = ${money(x.total)}`);return true;
+ commit();toast(`Saqlandi: ${s.name} × ${q} = ${money(x.total)}`);return x.id;
 }
 
 /* ---------- Xizmat/mahsulot kartochkalari (ReflectiveCard) ---------- */
@@ -1032,15 +1283,78 @@ function ensureDeck(){if(!deck&&window.ReflectiveLib){try{deck=ReflectiveLib.cre
 const ICON_SVC='<svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg>';
 const ICON_PRD='<svg viewBox="0 0 24 24"><path d="M3 7.5 12 3l9 4.5-9 4.5z"/><path d="M3 7.5v9L12 21l9-4.5v-9M12 12v9"/></svg>';
 const ICON_PLUS='<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>';
-const CARD_SKELETON=`<div class="reflective-card__body"><canvas class="reflective-card__canvas" aria-hidden="true"></canvas>
+// Kartochka belgilari (o'zimiz chizgan, 24×24 chiziqli SVG). c — belgining o'z rangi.
+const CARD_ICONS={
+ idphoto:{n:"3×4 / pasport foto",c:"#3b82f6",p:'<rect x="5" y="2.5" width="14" height="19" rx="2"/><circle cx="12" cy="9.5" r="3"/><path d="M7.6 18.5c.8-2.5 2.4-3.8 4.4-3.8s3.6 1.3 4.4 3.8"/>'},
+ camera:{n:"Foto",c:"#0ea5e9",p:'<path d="M4 8h3l1.6-2.5h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.6"/>'},
+ printer:{n:"Print",c:"#06b6d4",p:'<path d="M7 9V3.5h10V9"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v6.5H7z"/><path d="M17.5 12h.01"/>'},
+ copy:{n:"Kserokopiya",c:"#8b5cf6",p:'<rect x="8" y="3" width="12" height="15" rx="2"/><path d="M16 21H6a2 2 0 0 1-2-2V7"/><path d="M11 8h6M11 11.5h6M11 15h3"/>'},
+ laminate:{n:"Laminatsiya",c:"#10b981",p:'<rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M10 3 4 9M20 8 9 19"/>'},
+ book:{n:"Pereplyot / kitob",c:"#f97316",p:'<path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v15H5.5A1.5 1.5 0 0 0 4 19.5z"/><path d="M4 19.5A1.5 1.5 0 0 0 5.5 21H20v-3"/><path d="M8 7h8M8 10.5h5"/>'},
+ banner:{n:"Banner / stiker",c:"#ec4899",p:'<rect x="3" y="4" width="18" height="11" rx="1.5"/><path d="M7 15v6M17 15v6M7 8h7M7 11h10"/>'},
+ mug:{n:"Sublimatsiya / krujka",c:"#a855f7",p:'<path d="M5 7h11v9a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8 2.5v2M11 2v2.5M14 2.5v2"/>'},
+ pen:{n:"Dizayn",c:"#db2777",p:'<path d="M12 19.5 19.5 12l2 2-7.5 7.5z"/><path d="M18 13 16.5 5.5 3 2.5l3 13.5 7.5 1.5z"/><path d="M3 2.5l7.6 7.6"/><circle cx="11.5" cy="11" r="1.8"/>'},
+ wrench:{n:"Ta’mirlash",c:"#ef4444",p:'<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>'},
+ os:{n:"Windows / dastur o‘rnatish",c:"#2563eb",p:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><path d="M12 6.8v5.4M9.6 9.8 12 12.2l2.4-2.4"/>'},
+ doc:{n:"Hujjat / rezyume",c:"#059669",p:'<path d="M6 2.5h8.5L18 6v15H6z"/><path d="M14 2.5V6.5h4"/><path d="M9 11h6M9 14.5h6M9 18h4"/>'},
+ usb:{n:"Fleshka",c:"#eab308",p:'<rect x="7" y="9" width="10" height="12.5" rx="2"/><path d="M9 9V3h6v6"/><path d="M11 5.5h.01M13 5.5h.01"/>'},
+ plug:{n:"Kabel / zaryadlovchi",c:"#f59e0b",p:'<path d="M9 2v5M15 2v5"/><path d="M6 7h12v4a6 6 0 0 1-12 0z"/><path d="M12 17v5"/>'},
+ phone:{n:"Telefon",c:"#6366f1",p:'<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/>'},
+ headphones:{n:"Quloqchin",c:"#7c3aed",p:'<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/>'},
+ mouse:{n:"Sichqoncha / klaviatura",c:"#64748b",p:'<rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/>'},
+ wifi:{n:"Internet",c:"#0891b2",p:'<path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.5 16a5 5 0 0 1 7 0"/><path d="M12 19.5h.01"/>'},
+ scan:{n:"Skaner",c:"#0ea5e9",p:'<path d="M3 7V4h3M18 4h3v3M21 17v3h-3M6 20H3v-3"/><path d="M3 12h18"/>'},
+ disk:{n:"Disk / SSD",c:"#475569",p:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3a9 9 0 0 1 9 9"/>'},
+ ink:{n:"Kartrij / siyoh",c:"#0284c7",p:'<path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/>'},
+ star:{n:"Boshqa xizmat",c:"#3b82f6",p:'<path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/>'},
+ box:{n:"Boshqa mahsulot",c:"#8b5cf6",p:'<path d="M3 7.5 12 3l9 4.5-9 4.5z"/><path d="M3 7.5v9L12 21l9-4.5v-9M12 12v9"/>'}
+};
+// Nomiga qarab mos belgini avtomatik tanlash (o‘zbek, rus va ingliz so‘zlari)
+const ICON_RULES=[
+ [/3\s*[x×х*]\s*4|pasport|pasportga|viza/,"idphoto"],
+ [/kserok|ksero|kopiya|nusxa|copy/,"copy"],
+ [/lamin/,"laminate"],
+ [/pereplyot|pereplet|muqova|broshur|kitob|book|tikish/,"book"],
+ [/rezyume|resume|hujjat|ariza|obyektivka|spravka|blank|word|excel|matn|yozib|forma/,"doc"],
+ [/banner|stik|stick|plakat|vizitk|reklama|orakal|oracal/,"banner"],
+ [/sublim|krujka|futbolka|mug|kepka|kruzhka/,"mug"],
+ [/dizayn|design|logo|montaj|tahrir|fotoshop|photoshop/,"pen"],
+ [/windows|ornat|dastur|program|antivirus|ustanov|drayver|office|ofis/,"os"],
+ [/tamir|remont|repair|usta|tozala|chist|diagnos/,"wrench"],
+ [/fleshk|flesh|flash|usb/,"usb"],
+ [/kabel|zaryad|cable|adapter|shnur|kalonka/,"plug"],
+ [/telefon|phone|smartfon|chexol/,"phone"],
+ [/naushnik|quloqchin|headphone|garnitura/,"headphones"],
+ [/sichqon|mouse|mishka|klaviatur|keyboard/,"mouse"],
+ [/internet|wifi|router|modem/,"wifi"],
+ [/skan|scan/,"scan"],
+ [/disk|hdd|ssd|\bcd\b|dvd|xotira|memory/,"disk"],
+ [/kartrij|siyoh|toner|\bink\b|zapravka|kraska/,"ink"],
+ [/foto|photo|surat/,"camera"],
+ [/print|pechat|chop|oq-qora|rangli|raspechat/,"printer"]
+];
+const normName=t=>String(t||"").toLowerCase().replace(/[’‘'ʻʼ`´]/g,"");
+function autoIcon(s){const n=normName(s.name);for(const [re,k] of ICON_RULES)if(re.test(n))return k;return s.type==="mahsulot"?"box":"star"}
+const iconKey=s=>s.icon&&CARD_ICONS[s.icon]?s.icon:autoIcon(s);
+const iconSvg=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${(CARD_ICONS[k]||CARD_ICONS.star).p}</svg>`;
+const CARD_COLORS=[["","Avtomatik (belgiga mos)"],["silver","Kumush (rangsiz)"],["#3b82f6","Ko‘k"],["#10b981","Yashil"],["#ef4444","Qizil"],["#f97316","To‘q sariq"],["#eab308","Sariq"],["#8b5cf6","Binafsha"],["#ec4899","Pushti"],["#06b6d4","Moviy"]];
+const okColor=c=>/^#[0-9a-f]{6}$/i.test(c||"")?c:"";
+// Kartochkaning haqiqiy rangi: o‘zi tanlagan rang → yoki belgining rangi; «Kumush» — rangsiz
+const cardColor=s=>s.color==="silver"?"":okColor(s.color)||(CARD_ICONS[iconKey(s)]||CARD_ICONS.star).c;
+const okImg=v=>typeof v==="string"&&v.startsWith("data:image/")?v:"";
+const CARD_SKELETON=`<div class="reflective-card__body"><canvas class="reflective-card__canvas" aria-hidden="true"></canvas><img class="rc-img" alt="" hidden><span class="rc-shade"></span>
  <div class="reflective-card__content">
-  <div class="reflective-card__header"><span class="reflective-card__badge"><span class="ic"></span><span class="k"></span></span><span class="reflective-card__status"><span class="reflective-card__dot"></span><span class="st"></span></span></div>
-  <div class="reflective-card__identity"><h3 class="reflective-card__name"></h3><p class="reflective-card__role"></p></div>
+  <div class="reflective-card__header"><span class="reflective-card__badge"><span class="ic"></span><span class="k"></span></span><span class="rc-emblem"></span></div>
+  <div class="reflective-card__identity"><h3 class="reflective-card__name"></h3><p class="reflective-card__role"></p><span class="reflective-card__status"><span class="reflective-card__dot"></span><span class="st"></span></span></div>
   <div class="reflective-card__footer"><div class="reflective-card__id"><span class="reflective-card__label">Bugun sotildi</span><span class="reflective-card__value"></span></div><span class="reflective-card__tile">${ICON_PLUS}</span></div>
  </div><span class="reflective-card__rim"></span></div>`;
 function fillCard(el,s,cnt){
  const prod=s.type==="mahsulot",st=s.stockId?findById("stock",s.stockId):null;
- const key=[s.name,s.price,s.type,cnt,st?st.qty:"-"].join("|");if(el.dataset.k===key)return;el.dataset.k=key;
+ const color=cardColor(s),img=okImg(s.img),ik=iconKey(s);
+ const key=[s.name,s.price,s.type,cnt,st?st.qty:"-",color,ik,img.length,img.slice(-24)].join("|");if(el.dataset.k===key)return;el.dataset.k=key;
+ el.classList.toggle("has-color",!!color);if(color)el.style.setProperty("--acc",color);else el.style.removeProperty("--acc");
+ const im=el.querySelector(".rc-img");el.classList.toggle("has-img",!!img);if(img){if(im.getAttribute("src")!==img)im.src=img;im.hidden=false}else{im.removeAttribute("src");im.hidden=true}
+ el.querySelector(".rc-emblem").innerHTML=iconSvg(ik);el.querySelector(".rc-emblem").title=CARD_ICONS[ik].n;
  el.querySelector(".ic").innerHTML=prod?ICON_PRD:ICON_SVC;el.querySelector(".k").textContent=prod?"Mahsulot":"Xizmat";
  el.querySelector(".reflective-card__name").textContent=s.name;
  el.querySelector(".reflective-card__role").textContent=s.price?money(s.price):"Narx kelishiladi";
@@ -1060,9 +1374,10 @@ function renderServiceGrid(){
    const el=document.createElement("div");el.className="reflective-card";el.tabIndex=0;el.setAttribute("role","button");el.dataset.id=key;el.innerHTML=CARD_SKELETON;
    el.addEventListener("click",()=>openSell(key));el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openSell(key)}});
    grid.insertBefore(el,grid.children[i]||null);const d=ensureDeck();
-   rec={el,h:d?d.attach(el,{delay:Math.min(i,14)*55}):null};if(!d)el.classList.add("reflective-card--flat");cardEls.set(key,rec);
+   rec={el,h:d?d.attach(el,{delay:Math.min(i,14)*55,tint:cardColor(s)||null}):null,tint:cardColor(s)};if(!d)el.classList.add("reflective-card--flat");cardEls.set(key,rec);
   }else if(grid.children[i]!==rec.el)grid.insertBefore(rec.el,grid.children[i]||null);
   fillCard(rec.el,s,counts[key]||0);
+  if(rec.tint!==cardColor(s)){rec.tint=cardColor(s);if(rec.h&&rec.h.setTint)rec.h.setTint(rec.tint||null)}
   rec.el.style.display=!q||s.name.toLowerCase().includes(q)?"":"none";
  });
  for(const [k,rec] of cardEls)if(!seen.has(k)){if(rec.h)rec.h.destroy();rec.el.remove();cardEls.delete(k)}
@@ -1076,25 +1391,26 @@ function renderServiceGrid(){
 function syncKindSeg(){document.querySelectorAll("#kindSeg button").forEach(b=>b.classList.toggle("on",b.dataset.kind===saleKind));renderServiceGrid()}
 document.querySelectorAll("#kindSeg button").forEach(b=>b.onclick=()=>{saleKind=b.dataset.kind;syncKindSeg()});
 $("svcSearch").oninput=renderServiceGrid;
+$("serviceColor").innerHTML=CARD_COLORS.map(([v,n])=>`<option value="${v}">${n}</option>`).join("");
 
 /* ---------- Savdo oynasi ---------- */
-let sellId=null,sellPay="Naqd";
+let sellId=null,sellPay="Naqd",sellCtx=null;
 const isPhone=()=>matchMedia("(max-width:900px)").matches;
 function setPay(p){sellPay=p;document.querySelectorAll("#smPay button").forEach(b=>b.classList.toggle("on",b.dataset.pay===p));
  $("smCustHint").textContent=p==="Qarz"?"(qarz uchun majburiy)":"(ixtiyoriy)";$("smCustHint").className=p==="Qarz"?"neg":"muted"}
 function updTotal(){const q=Math.max(1,Math.floor(Number($("smQty").value)||1)),p=Math.max(0,Number($("smPrice").value)||0);$("smTotal").textContent=money(q*p);
  const s=sellId&&findById("services",sellId);$("smKeepWrap").classList.toggle("hidden",!(s&&p>0&&p!==Number(s.price)))}
-function openSell(id){
- const s=findById("services",id);if(!s)return;sellId=String(id);
+function openSell(id,pre){
+ pre=pre||{};const s=pre.virtual||findById("services",id);if(!s)return;sellId=pre.virtual?null:String(id);sellCtx={s,pre};
  const prod=s.type==="mahsulot",st=s.stockId?findById("stock",s.stockId):null;
  $("smKind").textContent=prod?"📦 Mahsulot":"🛠 Xizmat";$("smKind").className="pill xs "+(prod?"v":"b");
- $("smTitle").textContent=s.name;
+ $("smTitle").textContent=pre.title||s.name;
  $("smInfo").textContent=st?`Omborda: ${st.qty} ${st.unit}`+(s.price?` · narx ${money(s.price)}`:""):(s.price?`Narx: ${money(s.price)}`:"Narxni kiriting");
- $("smQty").value=1;$("smPrice").value=s.price||"";$("smCust").value="";$("smKeep").checked=!s.price;setPay("Naqd");updTotal();
+ $("smQty").value=pre.qty||1;$("smPrice").value=pre.price!=null&&pre.price!==""?pre.price:(s.price||"");$("smCust").value=pre.cust||"";$("smKeep").checked=!s.price;setPay("Naqd");updTotal();
  const m=$("sellModal");m.classList.remove("hidden");requestAnimationFrame(()=>requestAnimationFrame(()=>m.classList.add("open")));
  setTimeout(()=>{if(!s.price)$("smPrice").focus();else if(!isPhone()){$("smQty").focus();$("smQty").select()}},230);
 }
-function closeSell(){const m=$("sellModal");m.classList.remove("open");sellId=null;setTimeout(()=>{if(!m.classList.contains("open"))m.classList.add("hidden")},220)}
+function closeSell(){const m=$("sellModal");m.classList.remove("open");sellId=null;sellCtx=null;setTimeout(()=>{if(!m.classList.contains("open"))m.classList.add("hidden")},220)}
 $("smClose").onclick=closeSell;$("smCancel").onclick=closeSell;
 $("sellModal").addEventListener("click",e=>{if(e.target===$("sellModal"))closeSell()});
 $("smMinus").onclick=()=>{$("smQty").value=Math.max(1,(Number($("smQty").value)||1)-1);updTotal()};
@@ -1103,10 +1419,12 @@ $("smChips").querySelectorAll("button").forEach(b=>b.onclick=()=>{$("smQty").val
 $("smQty").oninput=updTotal;$("smPrice").oninput=updTotal;
 document.querySelectorAll("#smPay button").forEach(b=>b.onclick=()=>{setPay(b.dataset.pay);if(b.dataset.pay==="Qarz")$("smCust").focus()});
 $("smSave").onclick=()=>{
- const s=sellId&&findById("services",sellId);if(!s)return closeSell();
+ const ctx=sellCtx,s=ctx&&ctx.s;if(!s)return closeSell();
  const q=Math.max(1,Math.floor(Number($("smQty").value)||1)),price=Math.max(0,Number($("smPrice").value)||0);
  const keep=!$("smKeepWrap").classList.contains("hidden")&&$("smKeep").checked&&price>0;
- if(recordSale(s,q,price,sellPay,$("smCust").value.trim())){
+ const saleId=recordSale(s,q,price,sellPay,$("smCust").value.trim());
+ if(saleId){
+  if(ctx.pre.onSaved)ctx.pre.onSaved(saleId,q*price);
   if(keep){S.patch("services",s.id,{price});commit();toast(`Saqlandi. «${s.name}» narxi endi ${money(price)}`)}
   const rec=cardEls.get(String(s.id));closeSell();
   if(rec){rec.el.classList.remove("pulse");void rec.el.offsetWidth;rec.el.classList.add("pulse")}
@@ -1115,12 +1433,29 @@ $("smSave").onclick=()=>{
 document.addEventListener("keydown",e=>{if($("sellModal").classList.contains("hidden"))return;
  if(e.key==="Escape")closeSell();else if(e.key==="Enter"&&e.target.tagName!=="BUTTON"){e.preventDefault();$("smSave").click()}});
 
+// Kirim: mavjud tovarning narxi faqat siz tasdiqlasangiz o'zgaradi (bo'sh qoldirilsa — eski narx qoladi)
+const findStockByName=(n,u)=>db.stock.find(x=>x.name.toLowerCase()===n.toLowerCase()&&(!u||x.unit===u));
+$("stockName").addEventListener("input",()=>{const x=findStockByName($("stockName").value.trim());
+ if(x){$("stockUnit").value=x.unit;$("stockCost").placeholder=`Hozirgi narx: ${num(x.cost)} (bo‘sh qoldirsangiz o‘zgarmaydi)`}else $("stockCost").placeholder="Yangi tovar uchun"});
 $("addStock").onclick=()=>{
- const n=$("stockName").value.trim(),q=Number($("stockQty").value),u=$("stockUnit").value,c=Number($("stockCost").value)||0;
- if(!n||q<=0)return toast("Mahsulot nomi va miqdorini kiriting");
- let x=db.stock.find(x=>x.name.toLowerCase()===n.toLowerCase()&&x.unit===u);
- if(x){S.inc("stock",x.id,"qty",q);S.patch("stock",x.id,{cost:c})}else{x={id:uid(),name:n,qty:q,unit:u,cost:c};S.put("stock",x)}
- S.put("stockIn",{id:uid(),date:today(),stockId:x.id,name:n,qty:q,unit:u,total:q*c});$("stockName").value="";commit();toast("Omborga kirim qilindi")};
+ const n=$("stockName").value.trim(),q=Number($("stockQty").value),u=$("stockUnit").value,raw=$("stockCost").value.trim(),c=raw===""?null:Math.max(0,Number(raw)||0);
+ if(!n||!(q>0))return toast("Mahsulot nomi va miqdorini kiriting");
+ let x=findStockByName(n,u);
+ if(x){
+  if(c!==null&&c!==Number(x.cost)&&confirm(`«${x.name}» kirim narxi ${money(x.cost)} edi.\nYangi narx ${money(c)} bo‘lsinmi?\n\nOK — yangi narx saqlanadi\nBekor qilish — eski narx (${money(x.cost)}) qoladi`))S.patch("stock",x.id,{cost:c});
+  S.inc("stock",x.id,"qty",q);
+ }else{x={id:uid(),name:n,qty:q,unit:u,cost:c??0};S.put("stock",x)}
+ const paid=c!==null?c:Number(x.cost)||0;
+ S.put("stockIn",{id:uid(),date:today(),stockId:x.id,name:x.name,qty:q,unit:u,total:q*paid});
+ $("stockName").value="";$("stockCost").value="";$("stockCost").placeholder="Yangi tovar uchun";$("stockQty").value=1;commit();toast(`Omborga kirim: ${x.name} +${q} ${u}`)};
+// Tovarni ombordan o'chirish (tugagan yoki keraksiz bo'lsa)
+window.delStock=async id=>{
+ const st=findById("stock",id);if(!st)return;
+ const linked=db.services.filter(s=>String(s.stockId)===String(id)),prods=linked.filter(s=>s.type==="mahsulot");
+ const msg=(st.qty>0?`Diqqat: omborda hali ${st.qty} ${st.unit} bor.\n`:"")+(prods.length?"Uning savdo kartochkasi ham o‘chiriladi.\n":"")+"Oldingi savdolar va hisobotlar o‘zgarmaydi.";
+ if(!await askPin({title:`«${st.name}» ni ombordan o‘chirish`,detail:msg}))return;
+ prods.forEach(s=>S.del("services",s.id));linked.filter(s=>s.type!=="mahsulot").forEach(s=>S.patch("services",s.id,{stockId:null}));
+ S.del("stock",id);logAction("Tovar o‘chirildi",`${st.name} (qoldiq ${st.qty} ${st.unit})`,Math.max(0,st.qty)*(Number(st.cost)||0));commit();toast(`«${st.name}» o‘chirildi`)};
 $("addExpense").onclick=()=>{
  const n=$("expenseName").value.trim(),a=Number($("expenseAmount").value),d=$("expenseDate").value||today(),cat=$("expenseCat").value;
  if(!(a>0))return toast("Xarajat summasini kiriting");if(d>today())return toast("Kelajak sanasi kiritib bo‘lmaydi");
@@ -1129,9 +1464,9 @@ $("addExpense").onclick=()=>{
  S.put("expenses",{id:uid(),date:d,category:cat,name:n||cat,amount:a});$("expenseName").value="";$("expenseAmount").value="";commit();toast("Xarajat saqlandi")};
 $("addService").onclick=()=>{const n=$("serviceName").value.trim(),p=Number($("servicePrice").value)||0,c=Number($("serviceCost").value)||0,type=$("serviceType").value==="mahsulot"?"mahsulot":"xizmat",sid=$("serviceStock").value;
  if(!n)return toast("Nomini kiriting");if(p<0)return toast("Narx noto‘g‘ri");
- S.put("services",{id:uid(),type,name:n,price:p,cost:c,stockId:sid?Number(sid):null});$("serviceName").value="";$("servicePrice").value="";$("serviceCost").value=0;commit();
+ S.put("services",{id:uid(),type,name:n,price:p,cost:c,stockId:sid?Number(sid):null,color:$("serviceColor").value==="silver"?"silver":okColor($("serviceColor").value)||null});$("serviceName").value="";$("servicePrice").value="";$("serviceCost").value=0;commit();
  toast((type==="mahsulot"?"Mahsulot":"Xizmat")+" qo‘shildi: "+n)};
-$("saveSettings").onclick=()=>{S.settings({shop:$("setShop").value.trim()||"BUSINESS PRO",sub:$("setSub").value.trim(),goal:Number($("setGoal").value)||0});commit();toast("Sozlamalar saqlandi")};
+$("saveSettings").onclick=()=>{S.settings({shop:$("setShop").value.trim()||"BUSINESS PRO",sub:$("setSub").value.trim(),goal:Number($("setGoal").value)||0,shopPhone:$("setPhone").value.trim(),shopAddr:$("setAddr").value.trim()});commit();toast("Sozlamalar saqlandi")};
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{const t=b.dataset.tab;
  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===t));
  document.querySelectorAll("main section").forEach(x=>x.classList.toggle("hidden",x.id!==t));
@@ -1184,6 +1519,137 @@ $("avatarFile").onchange=async e=>{
 };
 $("avatarDel").onclick=()=>{if(confirm("Profil rasmi o‘chirilsinmi?")){S.settings({avatar:null});commit();toast("Rasm o‘chirildi")}};
 
+// Kartochka rasmi: kvadrat qilib kesiladi va kichraytiriladi (~20–30 KB)
+let imgFor=null;
+window.pickSvcImg=id=>{imgFor=id;$("svcImgFile").click()};
+$("svcImgFile").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f||imgFor==null)return;
+ if(!/^image\//.test(f.type))return toast("Faqat rasm fayl tanlang");if(f.size>20*1024*1024)return toast("Rasm juda katta (20 MB dan oshmasin)");
+ try{const data=await shrinkImage(f,360);editService(imgFor,"img",data)}catch(err){toast(err.message)}imgFor=null};
+
+/* ---------- Telegram buyurtmalar ---------- */
+const OST={yangi:["🆕 Yangi","b"],ishlanmoqda:["🖨 Ishlanmoqda","a"],tayyor:["✅ Tayyor","g"],berildi:["📦 Topshirildi","v"],bekor:["❌ Bekor","r"]};
+let ordFilter="faol",botInfo=null,seenOrders=null;
+const fsize=b=>!b?"":b>1048576?(b/1048576).toFixed(1)+" MB":Math.max(1,Math.round(b/1024))+" KB";
+function matchOrderService(o){return db.services.find(s=>iconKey(s)==="printer"&&(o.color==="rangli"?/rangli|color|цвет/i:/oq|qora|ч\/б|black/i).test(s.name))||db.services.find(s=>iconKey(s)==="printer")||null}
+function estimateOrder(o){const s=matchOrderService(o);return s&&s.price?s.price*(o.copies||1):0}
+function renderOrders(){
+ const all=(db.orders||[]).slice().sort((a,b)=>Number(b.id)-Number(a.id)),cnt=k=>all.filter(o=>o.status===k).length;
+ const nNew=cnt("yangi");$("ordBadge").textContent=nNew;$("ordBadge").classList.toggle("hidden",!nNew);
+ const active=o=>["yangi","ishlanmoqda","tayyor"].includes(o.status);
+ const F=[["faol","Faol",all.filter(active).length],["yangi","🆕 Yangi",nNew],["ishlanmoqda","🖨 Ishlanmoqda",cnt("ishlanmoqda")],["tayyor","✅ Tayyor",cnt("tayyor")],["berildi","📦 Topshirilgan",cnt("berildi")],["bekor","❌ Bekor",cnt("bekor")],["all","Hammasi",all.length]];
+ $("ordFilter").innerHTML=F.map(([k,n,c])=>`<button class="chip${ordFilter===k?" on":""}" data-f="${k}">${n} <b>${c}</b></button>`).join("");
+ $("ordFilter").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{ordFilter=b.dataset.f;renderOrders()});
+ const list=all.filter(o=>ordFilter==="all"||(ordFilter==="faol"?active(o):o.status===ordFilter));
+ const bu=botInfo&&botInfo.username;
+ $("botLine").innerHTML=!cloud.on?"Buyurtmalar server rejimida ishlaydi.":bu?`Bot: <a href="https://t.me/${esc(bu)}" target="_blank" rel="noopener">@${esc(bu)}</a> — shu havolani mijozlarga yuboring`:"Bot hali ulanmagan — Sozlamalar → «Telegram bot»";
+ $("notifBtn").classList.toggle("hidden",!window.Notification||Notification.permission==="granted");
+ if(!list.length){$("ordList").innerHTML=`<div class="emptybox">${all.length?"Bu bo‘limda buyurtma yo‘q.":"Hozircha buyurtma yo‘q. Mijozlar botga fayl yuborganda shu yerda darhol paydo bo‘ladi."}</div>`;return}
+ const tok=encodeURIComponent(cloud.token||"");
+ $("ordList").innerHTML=list.map(o=>{
+  const [lab,cls]=OST[o.status]||[o.status,"b"],id=esc(o.id),f=o.file||{};
+  let act="";
+  if(o.status==="yangi")act=`<button class="sm" onclick="ordSet('${id}','ishlanmoqda')">🖨 Ishga olish</button><button class="ok sm" onclick="ordReady('${id}')">✅ Tayyor</button><button class="danger sm" onclick="ordCancel('${id}')">Bekor qilish</button>`;
+  else if(o.status==="ishlanmoqda")act=`<button class="ok sm" onclick="ordReady('${id}')">✅ Tayyor</button><button class="danger sm" onclick="ordCancel('${id}')">Bekor qilish</button>`;
+  else if(o.status==="tayyor")act=`<button class="primary sm" onclick="ordGive('${id}')">💰 Topshirish va savdo</button><button class="sm" onclick="ordReady('${id}')">✏️ Summani o‘zgartirish</button><button class="danger sm" onclick="ordCancel('${id}')">Bekor qilish</button>`;
+  else act=`<span class="muted">${esc((o.history||[]).map(h=>(OST[h.s]||[h.s])[0]+" "+h.at.slice(11)).join(" → "))}${o.reason?" · sabab: "+esc(o.reason):""}</span>`;
+  return `<div class="ocard s-${esc(o.status)}">
+   <div class="oc-top"><b class="oc-no">№${esc(o.no)}</b><span class="pill ${cls} xs">${lab}</span><span class="muted">${fmtDate(o.date)} ${esc(o.time||"")}</span>${o.total?`<b class="oc-sum">${money(o.total)}</b>`:""}</div>
+   <div class="oc-file"><span class="oc-ic">${f.kind==="photo"?"🖼":"📄"}</span><span class="oc-fn" title="${esc(f.name)}">${esc(f.name||"—")}</span><span class="muted">${fsize(f.size)}</span>${cloud.on&&f.fileId?`<a class="oc-open" href="/api/orders/${id}/file?token=${tok}" target="_blank" rel="noopener">📥 Ochish</a>`:""}</div>
+   <div class="oc-meta"><span>🔢 <b>${esc(o.copies)}</b> nusxa</span><span>${o.color==="rangli"?"🎨 Rangli":"⚫ Oq-qora"}</span>${o.note?`<span class="oc-note">📝 ${esc(o.note)}</span>`:""}</div>
+   <div class="oc-cust">👤 ${esc(o.customer)}${o.username?` <a href="https://t.me/${esc(o.username)}" target="_blank" rel="noopener">@${esc(o.username)}</a>`:""}${o.phone?` · 📱 <a href="tel:${esc(o.phone)}">${esc(o.phone)}</a>`:""}</div>
+   <div class="oc-act">${act}</div></div>`}).join("");
+}
+async function ordSet(id,status,extra={}){
+ if(!cloud.on)return toast("Buyurtmalar faqat server rejimida ishlaydi");
+ try{const j=await api(`/api/orders/${id}/status`,{method:"POST",body:{status,...extra}});toast(`${OST[status][0]}${j.notified?" · mijozga xabar yuborildi":""}`);sync()}
+ catch(e){toast(e.net?"Internet yo‘q — buyurtma holatini o‘zgartirish uchun internet kerak":e.message)}
+}
+window.ordSet=ordSet;
+window.ordReady=id=>{const o=findById("orders",id);if(!o)return;const v=prompt(`Buyurtma №${o.no} tayyor.\nSummani kiriting — mijozga Telegram orqali yuboriladi:`,o.total||estimateOrder(o)||"");if(v===null)return;
+ ordSet(id,"tayyor",{total:Math.max(0,Number(String(v).replace(/[^\d.]/g,""))||0)})};
+window.ordCancel=id=>{const o=findById("orders",id);if(!o)return;const r=prompt(`Buyurtma №${o.no} bekor qilinsinmi?\nSababini yozing (mijozga yuboriladi) yoki bo‘sh qoldiring:`,"");if(r===null)return;
+ ordSet(id,"bekor",{reason:r.trim()});logAction("Buyurtma bekor qilindi",`№${o.no} · ${o.customer} · ${o.file?o.file.name:""}`,o.total||0);commit()};
+window.ordGive=id=>{const o=findById("orders",id);if(!o)return;const svc=matchOrderService(o);
+ openSell(null,{virtual:{id:svc?svc.id:null,name:`${svc?svc.name:"Print"} — buyurtma №${o.no}`,type:"xizmat",price:o.total||0,cost:svc?(Number(svc.cost)||0)*(o.copies||1):0},
+  title:`Buyurtma №${o.no} — topshirish`,qty:1,price:o.total||estimateOrder(o)||"",cust:o.customer,
+  onSaved:(saleId,total)=>ordSet(id,"berildi",{saleId,total})})};
+function beep(){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.type="sine";o.frequency.setValueAtTime(880,a.currentTime);o.frequency.setValueAtTime(1175,a.currentTime+.16);
+ g.gain.setValueAtTime(.0001,a.currentTime);g.gain.exponentialRampToValueAtTime(.22,a.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+.4);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+.42)}catch{}}
+function checkNewOrders(){
+ const news=(db.orders||[]).filter(o=>o.status==="yangi");
+ if(seenOrders===null){seenOrders=new Set(news.map(o=>String(o.id)));return}
+ const fresh=news.filter(o=>!seenOrders.has(String(o.id)));fresh.forEach(o=>seenOrders.add(String(o.id)));if(!fresh.length)return;
+ const o=fresh[fresh.length-1];toast(`🆕 Yangi buyurtma №${o.no} — ${o.customer}, ${o.copies} nusxa`);beep();
+ if(window.Notification&&Notification.permission==="granted"&&document.hidden){try{new Notification(`Yangi buyurtma №${o.no}`,{body:`${o.customer} · ${o.copies} nusxa · ${o.file?o.file.name:""}`,icon:"icon-192.png",tag:"order-"+o.id})}catch{}}
+}
+$("notifBtn").onclick=async()=>{if(!window.Notification)return toast("Bu brauzer bildirishnomani qo‘llamaydi");const r=await Notification.requestPermission();toast(r==="granted"?"🔔 Bildirishnomalar yoqildi":"Bildirishnomaga ruxsat berilmadi");renderOrders()};
+async function loadBotInfo(){if(!cloud.on)return;try{botInfo=await api("/api/bot/info");renderBotBox();renderOrders()}catch{}}
+function renderBotBox(){
+ const b=$("botBox");if(!b)return;
+ if(!cloud.on){b.innerHTML=`<span class="muted">Telegram bot faqat server rejimida ishlaydi.</span>`;return}
+ if(!botInfo){b.innerHTML=`<span class="muted">Bot holati tekshirilmoqda…</span>`;return}
+ if(!botInfo.enabled){b.innerHTML=`<span>🤖 <b>Bot ulanmagan.</b> Telegram'da @BotFather orqali bot yarating va tokenni Railway → Variables → <code>TELEGRAM_BOT_TOKEN</code> ga qo‘ying (README’da yo‘riqnoma).</span>`;return}
+ if(!botInfo.ready){b.innerHTML=`<span>🤖 Bot ulanmoqda… Bir necha daqiqadan keyin ham shunday tursa, tokenni tekshiring.</span><button class="sm" style="margin-left:auto" onclick="loadBotInfo()">Yangilash</button>`;return}
+ const u=esc(botInfo.username);
+ b.innerHTML=`<span>🤖 Bot ishlayapti: <a href="https://t.me/${u}" target="_blank" rel="noopener"><b>@${u}</b></a>${botInfo.serves?"":" <span class='neg'>(boshqa hisobga bog‘langan)</span>"}<br><span class="muted">Mijozlarga shu havolani yuboring: t.me/${u}. ${botInfo.linked?`Yangi buyurtmalar ${botInfo.linked} ta Telegram hisobingizga ham keladi.`:"Yangi buyurtmalar Telegram'ingizga ham kelishi uchun «Telegram'ga ulash»ni bosing."}</span></span>
+  <span class="actions" style="margin-left:auto"><button class="sm" onclick="copyBotLink()">📋 Havolani nusxalash</button><button class="primary sm" onclick="linkBot()">📲 Telegram'ga ulash</button>${botInfo.linked?`<button class="danger sm" onclick="unlinkBot()">Uzish</button>`:""}</span>`;
+}
+window.loadBotInfo=loadBotInfo;
+function chanMsg(ok,html){$("chanStatus").innerHTML=`<div class="chan-st ${ok?"ok":"bad"}">${html}</div>`}
+$("chanSave").onclick=async()=>{
+ const ch=$("setChan").value.trim(),link=$("setChanLink").value.trim();
+ S.settings({tgChannel:ch,tgChannelLink:link});commit();
+ if(!ch){chanMsg(true,"✅ Saqlandi. Obuna talab qilinmaydi — bot hammaga xizmat ko‘rsatadi.");if(cloud.on)api("/api/bot/channel-check",{method:"POST",body:{channel:"",link:""}}).catch(()=>{});return}
+ if(!cloud.on){chanMsg(false,"Saqlandi. Tekshirish uchun server rejimida bo‘lish kerak.");return}
+ chanMsg(true,"⏳ Tekshirilmoqda…");
+ try{const j=await api("/api/bot/channel-check",{method:"POST",body:{channel:ch,link}});
+  if(j.ok)chanMsg(true,`✅ <b>${esc(j.title||ch)}</b> kanali ulandi. Endi bot mijozdan avval shu kanalga obuna bo‘lishni so‘raydi.`);
+  else chanMsg(false,`⚠️ ${esc(j.error)}${j.title?"":""}<br><span class="muted">Bu xato tuzatilmaguncha bot obunani tekshirmaydi va hammaga xizmat ko‘rsataveradi.</span>`)}
+ catch(e){chanMsg(false,"⚠️ "+esc(e.message))}
+};
+window.copyBotLink=async()=>{const t=`https://t.me/${botInfo.username}`;try{await navigator.clipboard.writeText(t);toast("Havola nusxalandi: "+t)}catch{prompt("Havolani nusxalang:",t)}};
+window.linkBot=async()=>{try{const j=await api("/api/bot/link",{method:"POST"});window.open(j.url,"_blank","noopener");toast("Telegram'da «Start» tugmasini bosing");setTimeout(loadBotInfo,15000)}catch(e){toast(e.message)}};
+window.unlinkBot=async()=>{if(!confirm("Telegram xabarnomalari uzilsinmi? (Buyurtmalar ilovada avvalgidek ko‘rinadi)"))return;try{await api("/api/bot/unlink",{method:"POST"});loadBotInfo()}catch(e){toast(e.message)}};
+
+/* ---------- Haftalik solishtirish: bu hafta va o‘tgan hafta ---------- */
+const DAYS=["Du","Se","Ch","Pa","Ju","Sh","Ya"];
+const ds=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+function dayAgg(date){const S_=db.sales.filter(x=>x.date===date),E=db.expenses.filter(x=>x.date===date);const rev=sum(S_,x=>x.total),cogs=sum(S_,x=>x.cost*x.qty),exp=sum(E,x=>x.amount);return {rev,profit:rev-cogs-exp,count:S_.length}}
+function renderWeek(){
+ const now=new Date(),dow=(now.getDay()+6)%7,mon=new Date(now.getFullYear(),now.getMonth(),now.getDate()-dow);
+ const days=DAYS.map((n,i)=>{const a=new Date(mon);a.setDate(mon.getDate()+i);const b=new Date(mon);b.setDate(mon.getDate()+i-7);return {n,cur:dayAgg(ds(a)),prev:dayAgg(ds(b)),future:i>dow}});
+ const tot=(k,which,upto)=>days.reduce((s,d,i)=>s+(i<=upto?d[which][k]:0),0);
+ const pct=(a,b)=>b?Math.round((a-b)/Math.abs(b)*100):(a?null:0);
+ const kpi=(label,k,fmt)=>{const a=tot(k,"cur",dow),b=tot(k,"prev",dow),full=tot(k,"prev",6),p=pct(a,b);
+  const tag=p===null?`<span class="wk-chg up">yangi</span>`:p===0?`<span class="wk-chg">0%</span>`:`<span class="wk-chg ${p>0?"up":"down"}">${p>0?"▲":"▼"} ${Math.abs(p)}%</span>`;
+  return `<div class="kpi"><small>${label}</small><strong class="${k==="profit"&&a<0?"neg":""}">${fmt(a)}</strong>${tag}<div class="wk-prev">O‘tgan hafta shu kungacha: ${fmt(b)}<br>O‘tgan hafta jami: ${fmt(full)}</div></div>`};
+ // diagramma: har kun uchun ikki ustun (o‘tgan hafta — kulrang, bu hafta — ko‘k)
+ const W=640,H=200,L=10,B=26,T=14,ih=H-B-T,cw=(W-L*2)/7,mx=Math.max(1,...days.flatMap(d=>[d.cur.rev,d.prev.rev]));
+ let g="";days.forEach((d,i)=>{const x=L+i*cw,bw=Math.min(28,cw*.32),cx=x+cw/2,h=v=>v/mx*ih;
+  g+=`<rect x="${cx-bw-2}" y="${T+ih-h(d.prev.rev)}" width="${bw}" height="${h(d.prev.rev)}" rx="4" fill="#cbd5e1"><title>O‘tgan ${d.n}: ${money(d.prev.rev)}</title></rect>`;
+  if(!d.future)g+=`<rect x="${cx+2}" y="${T+ih-h(d.cur.rev)}" width="${bw}" height="${h(d.cur.rev)}" rx="4" fill="#3b82f6"><title>Bu hafta ${d.n}: ${money(d.cur.rev)}</title></rect>`;
+  g+=`<text x="${cx}" y="${H-8}" font-size="12" text-anchor="middle" fill="${i===dow?"#1d4ed8":"#64748b"}" font-weight="${i===dow?700:500}">${d.n}</text>`});
+ $("weekBox").innerHTML=`<div class="chead"><h3 style="margin:0">Bu hafta va o‘tgan hafta</h3><div class="legend"><span><i style="background:#cbd5e1"></i>O‘tgan hafta</span><span><i style="background:#3b82f6"></i>Bu hafta</span></div></div>
+  <div class="kpis" style="grid-template-columns:repeat(3,1fr)">${kpi("Tushum","rev",money)}${kpi("Sof foyda","profit",money)}${kpi("Savdolar soni","count",v=>v+" ta")}</div>
+  <div class="chart" style="margin-top:10px"><svg viewBox="0 0 ${W} ${H}" style="min-width:0">${g}<line x1="${L}" x2="${W-L}" y1="${T+ih}" y2="${T+ih}" stroke="#e2e8f0"/></svg></div>
+  <p class="hint" style="margin-top:4px">Solishtirish adolatli bo‘lishi uchun o‘tgan haftaning ham dushanbadan ${DAYS[dow]==="Ya"?"yakshanbagacha":"bugungi kungacha"} bo‘lgan qismi olinadi.</p>`;
+}
+
+/* ---------- Animatsiyali fon (React Bits «MicroSlats», RGB rang aylanadi) ---------- */
+let fx=null;
+const fxOn=()=>{try{return localStorage.getItem("bp_fx")!=="0"}catch{return true}};
+function mountFx(){
+ if(fx||!fxOn()||!window.MicroSlatsLib||!$("login").classList.contains("hidden"))return;
+ const phone=matchMedia("(max-width:900px)").matches;
+ try{fx=MicroSlatsLib.createMicroSlats($("bgFx"),{preset:"swell",rgb:true,rgbSpeed:22,rgbHue:220,rgbSat:.85,rgbLight:.55,
+  backgroundColor:"#04060d",glintColor:"#ffffff",slatWidth:phone?12:10,slatHeight:phone?28:25,gap:3,roundness:.75,
+  cursorStrength:.9,cursorSize:phone?60:45,trail:1.2,maxFps:phone?30:0,intro:true,introDuration:1.8})}catch(e){fx=null}
+ if(fx&&!fx.supported)fx=null;
+}
+function unmountFx(){if(fx){fx.destroy();fx=null}const h=$("bgFx");h.innerHTML="";h.classList.remove("micro-slats")}
+$("fxToggle").checked=fxOn();
+$("fxToggle").onchange=e=>{try{localStorage.setItem("bp_fx",e.target.checked?"1":"0")}catch{}if(e.target.checked)mountFx();else unmountFx()};
+
 /* ---------- Ilovani o‘rnatish (PWA) ---------- */
 let installEvt=null;
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installEvt=e;$("installBtn").classList.remove("hidden");$("installTop").classList.remove("hidden")});
@@ -1200,6 +1666,7 @@ else{const t=localStorage.getItem("bp_token"),u=lsGet("bp_user",null);render();
 // Yarim tunda yangi kun/oy boshlansa
 let lastDay=today();
 setInterval(()=>{if(today()!==lastDay){lastDay=today();if(cloud.on){cloud.booted=false;sync()}else{autoClose();persist();render()}}},60000);
+mountFx();
 if("serviceWorker" in navigator&&SERVER)navigator.serviceWorker.register("sw.js");
 
 </script></body></html>
