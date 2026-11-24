@@ -190,6 +190,7 @@ body:not([data-tab="sale"]):not([data-tab="reports"]) :is(.stats,#goalBox,#banne
 .nbadge{margin-left:auto;background:#ef4444;color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:0 7px;line-height:18px;min-width:18px;text-align:center;box-shadow:0 0 0 2px #0a1428}
 .olist{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;margin-top:12px}
 .ocard{border:1px solid var(--line);border-left:4px solid #3b82f6;border-radius:14px;padding:14px 16px;background:#fff;display:flex;flex-direction:column;gap:7px;box-shadow:var(--shadow)}
+.oc-svc{font-weight:700;font-size:15px}
 .ocard.s-ishlanmoqda{border-left-color:#f59e0b}.ocard.s-tayyor{border-left-color:#10b981}.ocard.s-berildi{border-left-color:#8b5cf6;opacity:.85}.ocard.s-bekor{border-left-color:#ef4444;opacity:.7}
 .oc-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.oc-no{font-size:17px}.oc-sum{margin-left:auto;font-size:16px}
 .oc-file{display:flex;align-items:center;gap:8px;background:#f8fafc;border:1px solid var(--line2);border-radius:10px;padding:8px 10px;min-width:0}
@@ -537,7 +538,11 @@ details.arch{margin-top:24px;border-top:1px solid var(--line);padding-top:8px}de
 <div class="field"><label>Oylik tushum maqsadi (so‘m)</label><input id="setGoal" type="number" min="0" inputmode="numeric"></div>
 <div class="field"><label>Do‘kon telefoni (botda ko‘rinadi)</label><input id="setPhone" placeholder="+998 90 123 45 67"></div>
 <div class="field" style="flex:1.6"><label>Manzil (botda ko‘rinadi)</label><input id="setAddr" placeholder="Sayxunobod, markaziy bozor yonida"></div>
+<div class="field"><label>Ish vaqti (botda ko‘rinadi)</label><input id="setHours" placeholder="Har kuni 9:00 – 20:00"></div>
+<div class="field" style="flex:2"><label>Ishxona lokatsiyasi (Google Maps havolasi yoki koordinata)</label><input id="setLoc" placeholder="https://maps.app.goo.gl/...  yoki  40.6512, 68.7321" autocomplete="off"></div>
 <button class="primary" id="saveSettings">Saqlash</button></div>
+<div id="locStatus" class="hint"></div>
+<p class="hint">📍 Lokatsiya — buyurtma tayyor bo‘lganda va «Manzil va aloqa» bosilganda mijozga <b>xarita</b> bo‘lib boradi. Eng oson yo‘li: Telegram'ni botga ulagan bo‘lsangiz, ishxonada turib botga <b>📎 → Lokatsiya</b> yuboring — bot o‘zi saqlab oladi.</p>
 <h3>Zaxira nusxa</h3>
 <p class="hint" id="backupHint"></p>
 <div class="actions" style="margin-top:10px"><button id="export">Zaxira nusxasini yuklab olish</button><button id="importBtn">Zaxira nusxasini tiklash</button><input id="importFile" type="file" accept="application/json" class="hidden"><input id="svcImgFile" type="file" accept="image/*" class="hidden"></div>
@@ -953,7 +958,7 @@ function render(){
 
  renderReports();
  // Sozlamalar
- if(notFocused("setShop"))$("setShop").value=db.settings.shop;if(notFocused("setSub"))$("setSub").value=db.settings.sub;if(notFocused("setChan"))$("setChan").value=db.settings.tgChannel||"";if(notFocused("setChanLink"))$("setChanLink").value=db.settings.tgChannelLink||"";if(notFocused("setPhone"))$("setPhone").value=db.settings.shopPhone||"";if(notFocused("setAddr"))$("setAddr").value=db.settings.shopAddr||"";if(notFocused("setGoal"))$("setGoal").value=db.settings.goal||"";
+ if(notFocused("setShop"))$("setShop").value=db.settings.shop;if(notFocused("setSub"))$("setSub").value=db.settings.sub;if(notFocused("setChan"))$("setChan").value=db.settings.tgChannel||"";if(notFocused("setChanLink"))$("setChanLink").value=db.settings.tgChannelLink||"";if(notFocused("setPhone"))$("setPhone").value=db.settings.shopPhone||"";if(notFocused("setAddr"))$("setAddr").value=db.settings.shopAddr||"";if(notFocused("setHours"))$("setHours").value=db.settings.shopHours||"";if(notFocused("setLoc"))$("setLoc").value=db.settings.shopLocText||(Number.isFinite(db.settings.shopLat)?db.settings.shopLat+", "+db.settings.shopLng:"");locShow();if(notFocused("setGoal"))$("setGoal").value=db.settings.goal||"";
  $("lastBackup").textContent=db.settings.lastBackup?"Oxirgi zaxira: "+new Date(db.settings.lastBackup).toLocaleString("uz-UZ"):"Hali zaxira nusxa olinmagan.";
  $("acctBox").innerHTML=cloud.on
   ?`<span>☁ Kirgan hisob: <b>${esc(cloud.email)}</b></span><span class="muted">Shu email va parol bilan telefonda ham kiring — ma’lumotlar bir xil bo‘ladi.</span><span class="actions" style="margin-left:auto"><button class="sm" onclick="changePass()">Parolni o‘zgartirish</button><button class="danger sm" onclick="logout()">Chiqish</button></span>`
@@ -1466,7 +1471,18 @@ $("addService").onclick=()=>{const n=$("serviceName").value.trim(),p=Number($("s
  if(!n)return toast("Nomini kiriting");if(p<0)return toast("Narx noto‘g‘ri");
  S.put("services",{id:uid(),type,name:n,price:p,cost:c,stockId:sid?Number(sid):null,color:$("serviceColor").value==="silver"?"silver":okColor($("serviceColor").value)||null});$("serviceName").value="";$("servicePrice").value="";$("serviceCost").value=0;commit();
  toast((type==="mahsulot"?"Mahsulot":"Xizmat")+" qo‘shildi: "+n)};
-$("saveSettings").onclick=()=>{S.settings({shop:$("setShop").value.trim()||"BUSINESS PRO",sub:$("setSub").value.trim(),goal:Number($("setGoal").value)||0,shopPhone:$("setPhone").value.trim(),shopAddr:$("setAddr").value.trim()});commit();toast("Sozlamalar saqlandi")};
+function locShow(){const s=db.settings,el=$("locStatus");if(!el)return;el.innerHTML=Number.isFinite(s.shopLat)?`✅ Lokatsiya saqlangan: ${s.shopLat.toFixed(5)}, ${s.shopLng.toFixed(5)} · <a href="https://maps.google.com/?q=${s.shopLat},${s.shopLng}" target="_blank" rel="noopener">xaritada ko‘rish</a>`:"⚠️ Lokatsiya hali kiritilmagan — mijozlarga xarita yuborilmaydi."}
+$("saveSettings").onclick=async()=>{
+ const v={shop:$("setShop").value.trim()||"BUSINESS PRO",sub:$("setSub").value.trim(),goal:Number($("setGoal").value)||0,shopPhone:$("setPhone").value.trim(),shopAddr:$("setAddr").value.trim(),shopHours:$("setHours").value.trim()};
+ const lt=$("setLoc").value.trim(),cur=db.settings.shopLocText||(Number.isFinite(db.settings.shopLat)?db.settings.shopLat+", "+db.settings.shopLng:"");
+ if(!lt){v.shopLocText="";v.shopLat=null;v.shopLng=null}
+ else if(lt!==cur){
+  let p=null;const m=lt.match(/(-?\d{1,2}\.\d{3,})\s*[, ]\s*(-?\d{1,3}\.\d{3,})/);
+  if(m&&!/^https?:/i.test(lt))p={lat:+m[1],lng:+m[2]};
+  else if(cloud.on){try{const j=await api("/api/bot/loc",{method:"POST",body:{v:lt}});if(j.ok)p={lat:j.lat,lng:j.lng};else{toast(j.error);$("locStatus").textContent="⚠️ "+j.error}}catch(e){toast(e.message)}}
+  if(p){v.shopLat=p.lat;v.shopLng=p.lng;v.shopLocText=lt}
+ }
+ S.settings(v);commit();locShow();toast("Sozlamalar saqlandi")};
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{const t=b.dataset.tab;
  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===t));
  document.querySelectorAll("main section").forEach(x=>x.classList.toggle("hidden",x.id!==t));
@@ -1530,8 +1546,10 @@ $("svcImgFile").onchange=async e=>{const f=e.target.files[0];e.target.value="";i
 const OST={yangi:["🆕 Yangi","b"],ishlanmoqda:["🖨 Ishlanmoqda","a"],tayyor:["✅ Tayyor","g"],berildi:["📦 Topshirildi","v"],bekor:["❌ Bekor","r"]};
 let ordFilter="faol",botInfo=null,seenOrders=null;
 const fsize=b=>!b?"":b>1048576?(b/1048576).toFixed(1)+" MB":Math.max(1,Math.round(b/1024))+" KB";
-function matchOrderService(o){return db.services.find(s=>iconKey(s)==="printer"&&(o.color==="rangli"?/rangli|color|цвет/i:/oq|qora|ч\/б|black/i).test(s.name))||db.services.find(s=>iconKey(s)==="printer")||null}
+const ORD_KW={foto:/foto|rasm|3.?[x×]4/i,tak:/taklif/i,viz:/vizit|flayer|buklet/i,alb:/albom/i,lam:/lamin/i,dvd:/dvd|cd|disk/i,net:/internet|onlayn|online/i,pc:/kompyuter|pc|windows/i,nb:/noutbuk|notebook|laptop/i,pr:/printer.*ta.?mir|ta.?mir.*printer|kartrij/i,dev:/ta.?mir/i};
+function matchOrderService(o){const k=o.service&&o.service.k;if(k&&k!=="ksr"&&ORD_KW[k])return db.services.find(s=>ORD_KW[k].test(s.name))||null;return db.services.find(s=>iconKey(s)==="printer"&&(o.color==="rangli"?/rangli|color|цвет/i:/oq|qora|ч\/б|black/i).test(s.name))||db.services.find(s=>iconKey(s)==="printer")||null}
 function estimateOrder(o){const s=matchOrderService(o);return s&&s.price?s.price*(o.copies||1):0}
+const ordSvc=o=>o.service&&o.service.t||"📄 Kserokopiya / Print";
 function renderOrders(){
  const all=(db.orders||[]).slice().sort((a,b)=>Number(b.id)-Number(a.id)),cnt=k=>all.filter(o=>o.status===k).length;
  const nNew=cnt("yangi");$("ordBadge").textContent=nNew;$("ordBadge").classList.toggle("hidden",!nNew);
@@ -1543,10 +1561,10 @@ function renderOrders(){
  const bu=botInfo&&botInfo.username;
  $("botLine").innerHTML=!cloud.on?"Buyurtmalar server rejimida ishlaydi.":bu?`Bot: <a href="https://t.me/${esc(bu)}" target="_blank" rel="noopener">@${esc(bu)}</a> — shu havolani mijozlarga yuboring`:"Bot hali ulanmagan — Sozlamalar → «Telegram bot»";
  $("notifBtn").classList.toggle("hidden",!window.Notification||Notification.permission==="granted");
- if(!list.length){$("ordList").innerHTML=`<div class="emptybox">${all.length?"Bu bo‘limda buyurtma yo‘q.":"Hozircha buyurtma yo‘q. Mijozlar botga fayl yuborganda shu yerda darhol paydo bo‘ladi."}</div>`;return}
+ if(!list.length){$("ordList").innerHTML=`<div class="emptybox">${all.length?"Bu bo‘limda buyurtma yo‘q.":"Hozircha buyurtma yo‘q. Mijozlar botda buyurtma berganda shu yerda darhol paydo bo‘ladi."}</div>`;return}
  const tok=encodeURIComponent(cloud.token||"");
  $("ordList").innerHTML=list.map(o=>{
-  const [lab,cls]=OST[o.status]||[o.status,"b"],id=esc(o.id),f=o.file||{};
+  const [lab,cls]=OST[o.status]||[o.status,"b"],id=esc(o.id),files=o.files&&o.files.length?o.files:(o.file?[o.file]:[]);
   let act="";
   if(o.status==="yangi")act=`<button class="sm" onclick="ordSet('${id}','ishlanmoqda')">🖨 Ishga olish</button><button class="ok sm" onclick="ordReady('${id}')">✅ Tayyor</button><button class="danger sm" onclick="ordCancel('${id}')">Bekor qilish</button>`;
   else if(o.status==="ishlanmoqda")act=`<button class="ok sm" onclick="ordReady('${id}')">✅ Tayyor</button><button class="danger sm" onclick="ordCancel('${id}')">Bekor qilish</button>`;
@@ -1554,9 +1572,10 @@ function renderOrders(){
   else act=`<span class="muted">${esc((o.history||[]).map(h=>(OST[h.s]||[h.s])[0]+" "+h.at.slice(11)).join(" → "))}${o.reason?" · sabab: "+esc(o.reason):""}</span>`;
   return `<div class="ocard s-${esc(o.status)}">
    <div class="oc-top"><b class="oc-no">№${esc(o.no)}</b><span class="pill ${cls} xs">${lab}</span><span class="muted">${fmtDate(o.date)} ${esc(o.time||"")}</span>${o.total?`<b class="oc-sum">${money(o.total)}</b>`:""}</div>
-   <div class="oc-file"><span class="oc-ic">${f.kind==="photo"?"🖼":"📄"}</span><span class="oc-fn" title="${esc(f.name)}">${esc(f.name||"—")}</span><span class="muted">${fsize(f.size)}</span>${cloud.on&&f.fileId?`<a class="oc-open" href="/api/orders/${id}/file?token=${tok}" target="_blank" rel="noopener">📥 Ochish</a>`:""}</div>
-   <div class="oc-meta"><span>🔢 <b>${esc(o.copies)}</b> nusxa</span><span>${o.color==="rangli"?"🎨 Rangli":"⚫ Oq-qora"}</span>${o.note?`<span class="oc-note">📝 ${esc(o.note)}</span>`:""}</div>
-   <div class="oc-cust">👤 ${esc(o.customer)}${o.username?` <a href="https://t.me/${esc(o.username)}" target="_blank" rel="noopener">@${esc(o.username)}</a>`:""}${o.phone?` · 📱 <a href="tel:${esc(o.phone)}">${esc(o.phone)}</a>`:""}</div>
+   <div class="oc-svc">${esc(ordSvc(o))}</div>
+   ${files.map((f,i)=>`<div class="oc-file"><span class="oc-ic">${f.kind==="photo"?"🖼":"📄"}</span><span class="oc-fn" title="${esc(f.name)}">${esc(f.name||"—")}</span><span class="muted">${fsize(f.size)}</span>${cloud.on&&f.fileId?`<a class="oc-open" href="/api/orders/${id}/file?i=${i}&token=${tok}" target="_blank" rel="noopener">📥 Ochish</a>`:""}</div>`).join("")}
+   <div class="oc-meta">${o.copies?`<span>🔢 <b>${esc(o.copies)}</b> nusxa</span>`:""}${o.color?`<span>${o.color==="rangli"?"🎨 Rangli":"⚫ Oq-qora"}</span>`:""}${o.note?`<span class="oc-note">📝 ${esc(o.note)}</span>`:""}</div>
+   <div class="oc-cust">👤 ${esc(o.customer)}${o.username?` <a href="https://t.me/${esc(o.username)}" target="_blank" rel="noopener">@${esc(o.username)}</a>`:""}${o.phone?` · 📱 <a href="tel:${esc(o.phone)}">${esc(o.phone)}</a>`:""}${o.addr?` · 📍 ${o.loc?`<a href="https://maps.google.com/?q=${o.loc.lat},${o.loc.lng}" target="_blank" rel="noopener">${esc(o.addr)}</a>`:esc(o.addr)}`:""}</div>
    <div class="oc-act">${act}</div></div>`}).join("");
 }
 async function ordSet(id,status,extra={}){
@@ -1568,9 +1587,9 @@ window.ordSet=ordSet;
 window.ordReady=id=>{const o=findById("orders",id);if(!o)return;const v=prompt(`Buyurtma №${o.no} tayyor.\nSummani kiriting — mijozga Telegram orqali yuboriladi:`,o.total||estimateOrder(o)||"");if(v===null)return;
  ordSet(id,"tayyor",{total:Math.max(0,Number(String(v).replace(/[^\d.]/g,""))||0)})};
 window.ordCancel=id=>{const o=findById("orders",id);if(!o)return;const r=prompt(`Buyurtma №${o.no} bekor qilinsinmi?\nSababini yozing (mijozga yuboriladi) yoki bo‘sh qoldiring:`,"");if(r===null)return;
- ordSet(id,"bekor",{reason:r.trim()});logAction("Buyurtma bekor qilindi",`№${o.no} · ${o.customer} · ${o.file?o.file.name:""}`,o.total||0);commit()};
+ ordSet(id,"bekor",{reason:r.trim()});logAction("Buyurtma bekor qilindi",`№${o.no} · ${o.customer} · ${ordSvc(o)}`,o.total||0);commit()};
 window.ordGive=id=>{const o=findById("orders",id);if(!o)return;const svc=matchOrderService(o);
- openSell(null,{virtual:{id:svc?svc.id:null,name:`${svc?svc.name:"Print"} — buyurtma №${o.no}`,type:"xizmat",price:o.total||0,cost:svc?(Number(svc.cost)||0)*(o.copies||1):0},
+ openSell(null,{virtual:{id:svc?svc.id:null,name:`${svc?svc.name:ordSvc(o).replace(/^\S+\s/,"")} — buyurtma №${o.no}`,type:"xizmat",price:o.total||0,cost:svc?(Number(svc.cost)||0)*(o.copies||1):0},
   title:`Buyurtma №${o.no} — topshirish`,qty:1,price:o.total||estimateOrder(o)||"",cust:o.customer,
   onSaved:(saleId,total)=>ordSet(id,"berildi",{saleId,total})})};
 function beep(){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.type="sine";o.frequency.setValueAtTime(880,a.currentTime);o.frequency.setValueAtTime(1175,a.currentTime+.16);
@@ -1579,8 +1598,8 @@ function checkNewOrders(){
  const news=(db.orders||[]).filter(o=>o.status==="yangi");
  if(seenOrders===null){seenOrders=new Set(news.map(o=>String(o.id)));return}
  const fresh=news.filter(o=>!seenOrders.has(String(o.id)));fresh.forEach(o=>seenOrders.add(String(o.id)));if(!fresh.length)return;
- const o=fresh[fresh.length-1];toast(`🆕 Yangi buyurtma №${o.no} — ${o.customer}, ${o.copies} nusxa`);beep();
- if(window.Notification&&Notification.permission==="granted"&&document.hidden){try{new Notification(`Yangi buyurtma №${o.no}`,{body:`${o.customer} · ${o.copies} nusxa · ${o.file?o.file.name:""}`,icon:"icon-192.png",tag:"order-"+o.id})}catch{}}
+ const o=fresh[fresh.length-1];toast(`🆕 Yangi buyurtma №${o.no} — ${o.customer} · ${ordSvc(o)}`);beep();
+ if(window.Notification&&Notification.permission==="granted"&&document.hidden){try{new Notification(`Yangi buyurtma №${o.no}`,{body:`${o.customer} · ${ordSvc(o)}`,icon:"icon-192.png",tag:"order-"+o.id})}catch{}}
 }
 $("notifBtn").onclick=async()=>{if(!window.Notification)return toast("Bu brauzer bildirishnomani qo‘llamaydi");const r=await Notification.requestPermission();toast(r==="granted"?"🔔 Bildirishnomalar yoqildi":"Bildirishnomaga ruxsat berilmadi");renderOrders()};
 async function loadBotInfo(){if(!cloud.on)return;try{botInfo=await api("/api/bot/info");renderBotBox();renderOrders()}catch{}}
