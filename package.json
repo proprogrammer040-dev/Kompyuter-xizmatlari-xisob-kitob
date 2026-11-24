@@ -1,6 +1,6 @@
 {
   "name": "business-pro-server",
-  "version": "6.2.0",
+  "version": "7.1.0",
   "private": true,
   "description": "BUSINESS PRO — hisob-kitob ilovasi serveri (Railway + PostgreSQL)",
   "main": "server.js",

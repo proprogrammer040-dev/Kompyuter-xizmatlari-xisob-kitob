@@ -20,7 +20,7 @@ if (!JWT_SECRET) {
 const useSSL = process.env.PGSSL === "1" || (!/railway\.internal|localhost|127\.0\.0\.1/.test(DATABASE_URL) && process.env.PGSSL !== "0");
 const pool = new Pool({ connectionString: DATABASE_URL, ssl: useSSL ? { rejectUnauthorized: false } : false, max: 10 });
 
-const COLS = new Set(["services", "stock", "debts", "sales", "expenses", "payments", "stockIn", "archive", "meta"]);
+const COLS = new Set(["services", "stock", "debts", "sales", "expenses", "payments", "stockIn", "archive", "meta", "audit", "orders"]);
 const ALWAYS = ["services", "stock", "archive", "meta", "debts"]; // sana bo'yicha cheklanmaydigan to'plamlar
 
 async function migrate() {
@@ -37,6 +37,8 @@ async function migrate() {
       primary key(shop_id, col, id));
     create index if not exists records_shop_seq on records(shop_id, seq);
     create index if not exists records_shop_date on records(shop_id, col, date);
+    create table if not exists tg_users(
+      chat_id bigint primary key, phone text, name text, updated_at timestamptz default now());
     create table if not exists applied_ops(
       shop_id int not null, op_id text not null, at timestamptz default now(),
       primary key(shop_id, op_id));
@@ -119,7 +121,7 @@ app.get("/api/bootstrap", auth, async (req, res) => {
   const m = await pool.query("select coalesce(max(seq),0)::text as seq, count(*)::int as n from records where shop_id=$1", [shop]);
   const r = await pool.query(
     `select col,id,data from records where shop_id=$1 and not deleted
-       and (col = any($3) or date >= $2)
+       and (col = any($3) or date >= $2 or (col = 'orders' and data->>'status' in ('yangi','ishlanmoqda','tayyor')))
        and (col <> 'debts' or coalesce((data->>'remaining')::numeric,0) > 0)`,
     [shop, from, ALWAYS]);
   res.json({ seq: m.rows[0].seq, empty: m.rows[0].n === 0, rows: r.rows });
@@ -188,6 +190,78 @@ app.get("/api/export", auth, async (req, res) => {
   res.json({ rows: r.rows });
 });
 
+/* ---------- Server tomonidan yozish (bot va buyurtmalar uchun) ---------- */
+async function putRecord(shop, col, id, data) {
+  const c = await pool.connect();
+  try {
+    await c.query("begin");
+    await c.query("select pg_advisory_xact_lock($1)", [shop]);
+    await c.query(`insert into records(shop_id,col,id,data,date) values($1,$2,$3,$4,$5)
+      on conflict(shop_id,col,id) do update set data=excluded.data, date=excluded.date, deleted=false, seq=nextval('rec_seq')`,
+      [shop, col, String(id), data, typeof data.date === "string" ? data.date : null]);
+    await c.query("commit");
+  } catch (e) { await c.query("rollback").catch(() => {}); throw e; } finally { c.release(); }
+  notify(shop);
+}
+async function getRecord(shop, col, id) {
+  const r = await pool.query("select data from records where shop_id=$1 and col=$2 and id=$3 and not deleted", [shop, col, String(id)]);
+  return r.rows[0] ? r.rows[0].data : null;
+}
+
+/* ---------- Telegram bot va buyurtmalar ---------- */
+const bot = require("./bot")({ pool, putRecord, getRecord });
+app.get("/api/bot/info", auth, async (req, res) => res.json(await bot.info(req.user.uid)));
+app.post("/api/bot/link", auth, (req, res) => {
+  const url = bot.linkUrl(req.user.uid);
+  if (!url) return res.status(503).json({ error: "Bot ishlamayapti — Railway Variables'da TELEGRAM_BOT_TOKEN ni tekshiring" });
+  res.json({ url });
+});
+app.post("/api/bot/channel-check", auth, async (req, res) => {
+  res.json(await bot.channelCheck(req.user.uid, String(req.body.channel || ""), String(req.body.link || "")));
+});
+app.post("/api/bot/unlink", auth, async (req, res) => { await bot.unlink(req.user.uid); res.json({ ok: true }); });
+
+// Buyurtma holatini o'zgartirish + mijozga Telegram xabari
+app.post("/api/orders/:id/status", auth, async (req, res) => {
+  const shop = req.user.uid;
+  const o = await getRecord(shop, "orders", req.params.id);
+  if (!o) return res.status(404).json({ error: "Buyurtma topilmadi" });
+  const st = String(req.body.status || "");
+  if (!bot.STATUS[st]) return res.status(400).json({ error: "Noto'g'ri holat" });
+  const { date, time } = bot.nowParts();
+  o.status = st;
+  if (req.body.total != null) o.total = Math.max(0, Number(req.body.total) || 0);
+  if (req.body.saleId) o.saleId = String(req.body.saleId);
+  if (req.body.reason) o.reason = String(req.body.reason).slice(0, 300);
+  o.history = [...(o.history || []), { s: st, at: `${date} ${time}` }];
+  await putRecord(shop, "orders", o.id, o);
+  const s = (await getRecord(shop, "meta", "settings")) || {};
+  const e = bot.esc;
+  let text = null;
+  if (st === "ishlanmoqda") text = `🖨 Buyurtmangiz №${o.no} ishlanmoqda.`;
+  else if (st === "tayyor") text = `✅ <b>Buyurtmangiz №${o.no} tayyor!</b>${o.total ? "\n💰 Summa: <b>" + bot.money(o.total) + "</b>" : ""}\n\n${s.shopAddr ? "📍 " + e(s.shopAddr) + "\n" : ""}Olib ketishingiz mumkin. Rahmat!`;
+  else if (st === "berildi") text = `🙏 Rahmat! Buyurtma №${o.no} topshirildi. Yana kutib qolamiz.`;
+  else if (st === "bekor") text = `❌ Buyurtma №${o.no} bekor qilindi.${o.reason ? "\nSabab: " + e(o.reason) : ""}`;
+  const notified = req.body.silent || !text ? false : await bot.notifyCustomer(o, text);
+  res.json({ ok: true, notified });
+});
+
+// Mijoz yuborgan faylni ochish (Telegram'dan olib beriladi)
+app.get("/api/orders/:id/file", auth, async (req, res) => {
+  const o = await getRecord(req.user.uid, "orders", req.params.id);
+  if (!o || !o.file) return res.status(404).send("Fayl topilmadi");
+  try {
+    const r = await bot.fileResponse(o.file.fileId);
+    const buf = Buffer.from(await r.arrayBuffer());
+    res.set("Content-Type", o.file.mime || r.headers.get("content-type") || "application/octet-stream");
+    res.set("Content-Disposition", `inline; filename*=UTF-8''${encodeURIComponent(o.file.name || "fayl")}`);
+    res.set("Cache-Control", "private, max-age=3600");
+    res.send(buf);
+  } catch (err) {
+    res.status(502).type("text/plain; charset=utf-8").send("Faylni Telegram'dan olib bo'lmadi: " + err.message);
+  }
+});
+
 /* ---------- Real vaqt: Server-Sent Events ---------- */
 const streams = new Map(); // shop_id -> Set(res)
 app.get("/api/events", auth, (req, res) => {
@@ -213,4 +287,5 @@ app.use("/api", (req, res) => res.status(404).json({ error: "Topilmadi" }));
 
 migrate().then(() => {
   app.listen(PORT, () => console.log(`BUSINESS PRO server ishga tushdi: port ${PORT}`));
+  bot.start();
 }).catch(e => { console.error("Bazaga ulanib bo'lmadi:", e.message); process.exit(1); });
